@@ -2030,14 +2030,15 @@ body {
 }
 .continue-card--done .continue-card-sub { font-size: .72rem; opacity: .8; margin-top: 2px; }
 
-/* ── Catégories repliables du Niveau 1 (ajoutées le 26/08/2026,
-   suite, demande utilisateur) — <details>/<summary> natifs : repli/
-   dépli sans JS de toggle dédié, accessible clavier + lecteur
-   d'écran par défaut du navigateur. Seule la catégorie "en cours"
-   est dépliée par défaut (logique dans _buildThemeGridHTML(),
-   app.js §7 — n'ouvre plus la suivante en plus depuis le
-   27/08/2026, demande utilisateur). Passage en colonne unique
-   pleine largeur (#grid1) le 27/08/2026, voir plus haut. ── */
+/* ── Catégories repliables des Niveaux 1 & 2 (Niveau 1 ajouté le
+   26/08/2026 suite ; Niveau 2 ajouté à son tour le 27/08/2026,
+   demandes utilisateur) — <details>/<summary> natifs : repli/dépli
+   sans JS de toggle dédié, accessible clavier + lecteur d'écran par
+   défaut du navigateur. Seule la catégorie "en cours" est dépliée
+   par défaut (logique dans _buildThemeGridHTML(), app.js §7 —
+   commune aux 2 niveaux, n'ouvre plus la suivante en plus depuis le
+   27/08/2026, demande utilisateur). Passage en colonne unique pleine
+   largeur (#grid1/#grid2) le 27/08/2026, voir plus haut. ── */
 .theme-category {
   margin-bottom: 10px;
   border-radius: 14px;
@@ -2154,18 +2155,17 @@ body {
    27/08/2026 (demande utilisateur, capture d'écran à l'appui).
    .themes-grid (2 colonnes, ci-dessus) reste adaptée aux cartes de
    thème individuelles (.theme-subgrid, à l'intérieur d'une
-   catégorie du Niveau 1) mais était appliquée par erreur aussi aux
-   conteneurs #grid1/#grid2 eux-mêmes : elle empilait les 5
-   catégories du Niveau 1 (<details class="theme-category">) 2 par
-   ligne au lieu d'1 par ligne, les rétrécissant de moitié (cartes
-   tronquées à l'écran, cf. capture) ; côté Niveau 2, elle serrait
-   inutilement les 16 cartes de dialogue à plat. Ces 2 règles, plus
-   spécifiques (sélecteur #id), l'emportent sur .themes-grid ci-
-   dessus sans y toucher. #grid1 n'a pas besoin de gap : .theme-
+   catégorie) mais était appliquée par erreur aussi aux conteneurs
+   #grid1/#grid2 eux-mêmes : elle empilait les catégories (<details
+   class="theme-category">) 2 par ligne au lieu d'1 par ligne, les
+   rétrécissant de moitié (cartes tronquées à l'écran, cf. capture).
+   Cette règle, plus spécifique (sélecteur #id), l'emporte sur
+   .themes-grid ci-dessus sans y toucher. Pas besoin de gap : .theme-
    category porte déjà sa propre marge basse (margin-bottom, voir
-   plus bas) pour l'espacement entre catégories. */
-#grid1 { display: flex; flex-direction: column; }
-#grid2 { display: flex; flex-direction: column; gap: 10px; }
+   plus bas) pour l'espacement entre catégories — vrai pour les 2
+   niveaux depuis que le Niveau 2 est lui aussi catégorisé (voir
+   LEVEL2_CATEGORIES, app.js §7, même ajout du 27/08/2026). */
+#grid1, #grid2 { display: flex; flex-direction: column; }
 
 .theme-card {
   background: #fff;
