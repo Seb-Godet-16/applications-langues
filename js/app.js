@@ -26,40 +26,60 @@
                                Claude Sonnet 5.
      18/07/2026 → 23/07/2026  Expériences utilisatrice (Sandrine,
                                Moi) et correctifs avec Claude Sonnet 5.
+     26/08/2026 (suite)       Regroupement du Niveau 1 (37 thèmes) en
+                               5 catégories repliables + carte
+                               "Continuer" (ergonomie, demande
+                               utilisateur) avec Claude Sonnet 5.
    ============================================================
    ARCHITECTURE (5 fichiers) :
      ├─ index.html  → Structure HTML + launcher (5 écrans, 3 modales)
      ├─ style.css   → Thèmes couleur, composants visuels (51 variables CSS, 179 décl.)
-     ├─ data-fr.js  → ALL_THEMES_FR (32 thèmes + 16 dialogues) — chargé à la demande
-     ├─ data-es.js  → ALL_THEMES_ES (32 thèmes + 16 dialogues) — chargé à la demande
-     └─ app.js      → Ce fichier : logique applicative complète (5 899 lignes)
+     ├─ data-fr.js  → ALL_THEMES_FR (37 thèmes + 16 dialogues) — chargé à la demande
+     ├─ data-es.js  → ALL_THEMES_ES (37 thèmes + 16 dialogues) — chargé à la demande
+     └─ app.js      → Ce fichier : logique applicative complète (6 074 lignes)
 
-   PLAN DU FICHIER (numéros recalculés le 23/07/2026 — ajout de l'entrée
-   HISTORIQUE du 18/07→23/07/2026 (retours d'expérience Sandrine + Moi),
-   et rattrapage d'un décalage cumulé depuis le dernier recalcul du
-   20/07/2026 : correctifs du 22/07/2026 (aria-label dynamique du bouton
-   🔄 dans §7/_fillHeader) plus un écart antérieur déjà signalé dans
-   Bilan_technique.md (§ Historique, entrée du 22/07/2026) mais jamais
-   répercuté ici faute de recalcul depuis le 20/07. Compteurs ARCHITECTURE
-   ci-dessus recomptés au passage (5 écrans/3 modales, 51 variables CSS/
-   179 décl., ligne totale d'app.js) ; chaque ancre revérifiée une à une
-   par grep, comme lors des recalculs précédents :
-     §0    L.  147  Chargement conditionnel des données — loadDataForMode()
-     §0b   L.  172  Helpers globaux — showResetConfirm(), _launchConfetti(), spinner
-     §1    L.  334  Variables d'état globales
-     §1b   L.  392  Utilitaires bilingues — L(), isFrench(), langKeys(), _themeTitle()
-     §3    L.  475  Point d'entrée — showLauncherVariant(), initApp(), showLauncher()
-     §3b   L.  811  Synthèse vocale — _resolveSpanishVoice(), speak(), speakSlow()
-     §3a-bis L. 1028  Surlignage mot par mot pendant la lecture (TTS, best-effort)
-     §3c   L. 1406  Interruption TTS à la mise en arrière-plan (visibilitychange)
-     §3d   L. 1427  Keepalive watchdog Chrome/Android (pause/resume toutes les 8 s)
-     §3e   L. 1457  Audio indisponible + toast _showToast() + _vibrateFeedback()
-     §4    L. 1541  Persistance — loadDone(), suivi modules ouverts (12/07), étoiles, quiz
-     §5    L. 1758  Navigation — showScreen(), _showScreenNoRender(), _updateBottomNav()
-     §5b   L. 1886  Helpers niveaux — _updateLevelTabs(), lessonGoBack(), navGoModules()
-     §6    L. 2100  Écran Home — renderHome(), _renderHomeRegionWidget()
-     §7    L. 2290  Écran Sections — renderSections(), _buildThemeCard() (états + badge, 12/07).
-                     Appelle aussi _markModulesVisited() (§15d, appel L.2306)
+   PLAN DU FICHIER (numéros recalculés le 26/08/2026, suite — ajout de
+   THEME_CATEGORIES + _findNextThemeToContinue() + _buildContinueCard() +
+   _buildThemeGridHTML() dans §7 (regroupement du Niveau 1 en catégories
+   repliables + carte "Continuer", demande utilisateur, +119 lignes), et
+   entrée HISTORIQUE du jour (+4 lignes). Au passage, rattrapage d'un
+   décalage de 36 lignes déjà présent avant cette session sur toutes les
+   ancres à partir de §9b (écart non expliqué, probablement un recalcul
+   antérieur resté incomplet — non audité plus avant, hors périmètre de
+   cette demande). Compteurs ARCHITECTURE ci-dessus inchangés (5 écrans/
+   3 modales, 51 variables CSS/179 décl. — aucune nouvelle variable CSS,
+   les nouveaux styles réutilisent --c-primary/--c-border/--c-text-sub/
+   --c-done/--c-state-complete-bg existantes) ; chaque ancre ci-dessous
+   revérifiée une à une par grep, comme lors des recalculs précédents :
+     §0    L.  167  Chargement conditionnel des données — loadDataForMode()
+     §0b   L.  192  Helpers globaux — showResetConfirm(), _launchConfetti(), spinner
+     §1    L.  354  Variables d'état globales
+     §1b   L.  412  Utilitaires bilingues — L(), isFrench(), langKeys(), _themeTitle()
+     §3    L.  495  Point d'entrée — showLauncherVariant(), initApp(), showLauncher()
+     §3b   L.  831  Synthèse vocale — _resolveSpanishVoice(), speak(), speakSlow()
+     §3a-bis L. 1048  Surlignage mot par mot pendant la lecture (TTS, best-effort)
+     §3c   L. 1426  Interruption TTS à la mise en arrière-plan (visibilitychange)
+     §3d   L. 1447  Keepalive watchdog Chrome/Android (pause/resume toutes les 8 s)
+     §3e   L. 1477  Audio indisponible + toast _showToast() + _vibrateFeedback()
+     §4    L. 1561  Persistance — loadDone(), suivi modules ouverts (12/07), étoiles, quiz
+     §5    L. 1778  Navigation — showScreen(), _showScreenNoRender(), _updateBottomNav()
+     §5b   L. 1906  Helpers niveaux — _updateLevelTabs(), lessonGoBack(), navGoModules()
+     §6    L. 2120  Écran Home — renderHome(), _renderHomeRegionWidget()
+     §7    L. 2310  Écran Sections — renderSections(), _buildThemeCard() (états + badge, 12/07).
+                     THEME_CATEGORIES, _findNextThemeToContinue(),
+                     _buildContinueCard() et _buildThemeGridHTML() ajoutées
+                     le 26/08/2026 (suite, demande utilisateur, ergonomie) :
+                     regroupent les 37 thèmes du Niveau 1 en 5 catégories
+                     repliables (<details>/<summary> natifs — seules la
+                     catégorie "en cours" et la suivante dépliées par
+                     défaut) et affichent une carte "▶ Continuer" en tête
+                     de grille (Niveau 1 et 2) pointant vers le prochain
+                     thème pertinent. renderSections() délègue désormais le
+                     remplissage de grid1/grid2 à _buildThemeGridHTML() (au
+                     lieu d'un .map() direct sur _buildThemeCard()) ; le
+                     Niveau 2 (16 dialogues) reste toutefois en grille
+                     simple, jugé déjà assez court.
+                     Appelle aussi _markModulesVisited() (§15d, appel L.2429)
                      depuis le 18/07/2026. Pastille .sections-mascot-all
                      ajoutée le 20/07/2026 (demande utilisateur) : clin d'œil
                      mascotte quand tous les modules sont à 3 étoiles, via
@@ -68,29 +88,29 @@
                      aria-label du bouton 🔄 global (_fillHeader(), appelée
                      par cette fonction) rendu dynamique selon la langue de
                      l'apprenant le 22/07/2026 (demande utilisateur).
-     §8    L. 2475  Ouverture d'un thème — openTheme() (marque module ouvert), switchTab()
-     §9    L. 2686  Cartes Flash — renderFlash(), pickAlpha(), buildAlphaDetail().
+     §8    L. 2614  Ouverture d'un thème — openTheme() (marque module ouvert), switchTab()
+     §9    L. 2825  Cartes Flash — renderFlash(), pickAlpha(), buildAlphaDetail().
                      Symbole mascotte régional .fc-region-mascot (recto FR/verso
                      ES et recto ES/verso FR) ajouté le 20/07/2026 (demande
                      utilisateur), cohérent avec .hrw-chip-mascot (§6/§15) et
                      .launcher-region-mascot (§15).
-     §9b   L. 2858  Reconnaissance vocale — _normalizeSpeech(), _levenshtein(), _speechMatch()
-     §9c   L. 3271  Onglet Répète — renderRepeat(), _rpShowWord(), _rpStartMic(), _rpShowEnd().
+     §9b   L. 3033  Reconnaissance vocale — _normalizeSpeech(), _levenshtein(), _speechMatch()
+     §9c   L. 3446  Onglet Répète — renderRepeat(), _rpShowWord(), _rpStartMic(), _rpShowEnd().
                      Clin d'œil mascotte sur sans-faute ajouté à _rpShowEnd() le
                      20/07/2026 (demande utilisateur), via _mascotSansFauteLine() (§14).
-     §10   L. 3632  Quiz 10 questions — _generateLevel1Quiz(), renderQuiz10(), checkQ10()
-     §11   L. 3910  Dialogue — _adaptDialogueLine(), renderDialog(), pickSit()
-     §12   L. 4031  Vocabulaire — renderVocab() (chips cliquables)
-     §13   L. 4089  Quiz Dialogue — renderDialogQuiz(), checkDQ()
-     §14   L. 4183  Utilitaires — _quizResultStrings(), _mascotSansFauteLine(),
-                     esc(), _escAttr(). _mascotSansFauteLine() (L.4238) ajoutée le
+     §10   L. 3807  Quiz 10 questions — _generateLevel1Quiz(), renderQuiz10(), checkQ10()
+     §11   L. 4085  Dialogue — _adaptDialogueLine(), renderDialog(), pickSit()
+     §12   L. 4206  Vocabulaire — renderVocab() (chips cliquables)
+     §13   L. 4264  Quiz Dialogue — renderDialogQuiz(), checkDQ()
+     §14   L. 4358  Utilitaires — _quizResultStrings(), _mascotSansFauteLine(),
+                     esc(), _escAttr(). _mascotSansFauteLine() (L.4413) ajoutée le
                      20/07/2026 (demande utilisateur) : factorise le clin d'œil
                      mascotte sur sans-faute auparavant écrit en dur dans
                      _quizResultStrings() (19/07/2026), désormais partagé avec
                      _rpShowEnd() (§9c). Depuis le 20/07/2026 (suite), délègue le
                      choix de clé mascotte à _mascotKeyForMode() (§15) pour
                      couvrir aussi le mode Français (🗼 France).
-     §15   L. 4268  Variantes régionales — renderRegionGrid(), pickRegion(), changeRegion().
+     §15   L. 4443  Variantes régionales — renderRegionGrid(), pickRegion(), changeRegion().
                      REGION_MASCOTS complété le 20/07/2026 (demande utilisateur)
                      d'une entrée France (🗼, symétrie avec le logo — Tour
                      Eiffel), et nouvelle fonction _mascotKeyForMode() qui
@@ -99,16 +119,16 @@
                      utilisée par §7, §14 et _refreshFooterMascot() (juste en
                      dessous, même section), qui n'affichent donc plus un jeu
                      de mots sans symbole en mode Français.
-     §15b  L. 4629  Accordéons — toggleAcc(), toggleLevelAcc(), _resizeOpenAccordions()
+     §15b  L. 4804  Accordéons — toggleAcc(), toggleLevelAcc(), _resizeOpenAccordions()
                      (aucune bannière numérotée dans le code à cet endroit, juste
                       un commentaire au-dessus de toggleAcc() — contrairement aux
                       autres sous-sections 5b/9b/9c qui en ont une)
-     §15c  L. 4701  Nouvel utilisateur & barre de nav — _isBrandNewUser(), condition
+     §15c  L. 4876  Nouvel utilisateur & barre de nav — _isBrandNewUser(), condition
                      dans le listener DOMContentLoaded (ajouté le 11/07/2026, demande
                      utilisateur : pas de barre de nav basse au tout premier lancement
                      sans aucun parcours ; réapparaît dès la première interaction via
                      showLauncherVariant())
-     §15d  L. 4714  Cartes de langue fusionnées avec l'explicatif — _langBoxInitialOpen(),
+     §15d  L. 4945  Cartes de langue fusionnées avec l'explicatif — _langBoxInitialOpen(),
                      _setLangBoxOpen(), _initLangBoxes(), toggleLangBox() ; ajouté le
                      18/07/2026 (demande utilisateur), fusionné le même jour avec les
                      anciennes cartes .lang-card (auparavant un encadré séparé à 2
@@ -116,27 +136,27 @@
                      désormais sa propre liste à puces dépliable et son propre état
                      déplié/replié, mémorisés séparément par langue.
                      Contient aussi (ajout du même jour, 3e retour utilisateur)
-                     _markModulesVisited()/_hasVisitedModules() (L.4749) : la
+                     _markModulesVisited()/_hasVisitedModules() (L.4936) : la
                      préférence explicite de l'apprenant prime toujours, puis les
                      cartes se replient dès la première visite des Modules (posé
-                     depuis renderSections(), §7, L.2306) — remplace l'ancienne
+                     depuis renderSections(), §7, L.2445) — remplace l'ancienne
                      dépendance à _isBrandNewUser() (§15c), trop grossière pour ce
                      cas précis (aucune bannière numérotée à cet endroit, comme
                      pour §15c)
-     §16   L. 4858  Remerciements — showCredits()
-     §17   L. 4873  Guide utilisateur — _buildHomeGuide(), showGuide(), navBackToHome(),
+     §16   L. 5033  Remerciements — showCredits()
+     §17   L. 5048  Guide utilisateur — _buildHomeGuide(), showGuide(), navBackToHome(),
                      navBackToGuide(), _refreshGuideRegion(), _guideSeenKey()/
                      _hasSeenGuide()/_markGuideSeen() (flag par langue). Câble aussi,
                      depuis le 12/07/2026, le libellé bilingue du bouton #homeInstallBtn
                      (déplacé en tête d'écran — cf. §21c)
-     §18   L. 5409  E-mail antispam — openAndCopyEmail()
-     §19   L. 5442  Exports PDF — _pdfTheme(), _exportGuide(), _exportVocab(), _exportSituation()
+     §18   L. 5584  E-mail antispam — openAndCopyEmail()
+     §19   L. 5617  Exports PDF — _pdfTheme(), _exportGuide(), _exportVocab(), _exportSituation()
                      (étiqueté "§21" dans le code même — incohérence de numérotation
                       préexistante, non corrigée ici pour ne pas renuméroter tout le fichier)
-     §20   L. 5755  Accessibilité clavier (keydown → role="button")
-     §21   L. 5770  Initialisation Launcher — addEventListener sur les cartes de langue
-     §21b  L. 5796  Viewport height fix Android — --app-h via window.innerHeight
-     §21c  L. 5837  Bouton d'installation PWA native — _initInstallButtons(),
+     §20   L. 5930  Accessibilité clavier (keydown → role="button")
+     §21   L. 5945  Initialisation Launcher — addEventListener sur les cartes de langue
+     §21b  L. 5971  Viewport height fix Android — --app-h via window.innerHeight
+     §21c  L. 6012  Bouton d'installation PWA native — _initInstallButtons(),
                      _installPwa() ; bouton #homeInstallBtn (tête de l'écran Guide,
                      libellé mis à jour dans §17) ajouté le 12/07/2026, remplace celui
                      auparavant caché dans la rubrique "Hors ligne" du guide
@@ -2183,8 +2203,8 @@ function renderHome() {
  * l'a déjà commencé. Reste masqué si l'autre parcours est vierge, pour ne
  * pas surcharger l'écran avec une barre de progression vide.
  *
- * Note : les deux parcours partagent toujours le même total de 48 modules
- * (32 thèmes + 16 dialogues, cf. Bilan_technique.md) — on réutilise donc
+ * Note : les deux parcours partagent toujours le même total de 53 modules
+ * (37 thèmes + 16 dialogues depuis le 26/08/2026, cf. Bilan_technique.md) — on réutilise donc
  * ALL_THEMES.length du mode courant comme référence pour l'autre parcours,
  * sans avoir à charger son fichier de données juste pour ce nombre.
  */
@@ -2207,7 +2227,7 @@ function _renderOtherModeProgress() {
     return;
   }
 
-  const total       = ALL_THEMES.length || 48;
+  const total       = ALL_THEMES.length || 53;
   const starsMax    = total * 3;
   const starsEarned = otherDone.reduce((acc, d) => acc + (d.stars || 0), 0);
   const flagEmojis  = { ES:'🇪🇸', MX:'🇲🇽', CO:'🇨🇴', PE:'🇵🇪', VE:'🇻🇪', AR:'🇦🇷', EC:'🇪🇨' };
@@ -2292,7 +2312,126 @@ function _renderHomeRegionWidget() {
    Génère dynamiquement les cartes de module pour chaque niveau.
    Chaque carte affiche : emoji, titre, sous-titre, étoiles,
    et un bouton "Recommencer" si le module a été validé.
+
+   Regroupement par catégories + carte "Continuer" — ajouté le
+   26/08/2026 (suite, demande utilisateur : la grille à plat des 37
+   thèmes du Niveau 1 pouvait faire l'effet d'un "mur de cartes"
+   décourageant au premier coup d'œil pour un grand débutant).
+   THEME_CATEGORIES (5 groupes thématiques ci-dessous, 37 thèmes au
+   total) regroupe les cartes du Niveau 1 sous des <details>/
+   <summary> natifs — repli/dépli sans JS de toggle dédié,
+   accessible clavier + lecteur d'écran par défaut du navigateur.
+   Seules la catégorie "en cours" (1ère catégorie contenant un thème
+   pas encore à 3 étoiles) et la suivante sont dépliées par défaut,
+   le reste replié (_buildThemeGridHTML()). Le Niveau 2 (16
+   dialogues) reste en grille simple, jugé déjà assez court pour ne
+   pas avoir besoin de catégorisation. _buildContinueCard() ajoute
+   par ailleurs, au-dessus de la grille des 2 niveaux, un bouton
+   "▶ Continuer" pointant directement vers le prochain thème
+   pertinent (en cours, sinon jamais ouvert), pour ne pas obliger à
+   parcourir la grille pour reprendre sa leçon.
 ═══════════════════════════════════════════════════════════ */
+
+/* THEME_CATEGORIES — 5 regroupements thématiques du Niveau 1 (37
+   thèmes au total, tous couverts). Purement un regroupement
+   d'affichage (accordéon) : ne modifie ni l'ordre de progression,
+   ni les données de data-fr.js/data-es.js, ni les clés de
+   sauvegarde (`done`/`openedThemes`) — indexé uniquement par
+   thème.id, résolu dynamiquement contre ALL_THEMES à chaque rendu. */
+const THEME_CATEGORIES = [
+  { id: 'bases',     emoji: '🌱', labelEs: 'Lo Esencial',           labelFr: 'Les Bases',
+    themeIds: ['alpha','salut','pres','express','interrog','num','verb','conn'] },
+  { id: 'describir', emoji: '😊', labelEs: 'Describir y Sentir',    labelFr: 'Décrire & Ressentir',
+    themeIds: ['heure_calendrier','meteo_climat','adj','emot','fam','col','corps'] },
+  { id: 'quotidien', emoji: '🏡', labelEs: 'Vida Cotidiana',        labelFr: 'Vie Quotidienne',
+    themeIds: ['adv','viequot','nour','bois','objets','log','muebles_equipamiento','veth'] },
+  { id: 'sorties',   emoji: '🚌', labelEs: 'Salidas y Situaciones', labelFr: 'Sorties & Situations',
+    themeIds: ['rest','orient','lieux','trans','met','sante','securite','dinero'] },
+  { id: 'monde',     emoji: '🌍', labelEs: 'El Mundo',              labelFr: 'Le Monde',
+    themeIds: ['viaje','pays','ocio','plan','anim','agric'] }
+];
+
+/* Retourne le prochain thème à proposer dans la carte "Continuer" :
+   priorité à un thème déjà entamé (state 'progress'), sinon le 1er
+   thème jamais ouvert (state 'new'), dans l'ordre de data-fr.js/
+   data-es.js. Retourne null si le niveau entier est à 3 étoiles. */
+function _findNextThemeToContinue(level) {
+  const themes = ALL_THEMES.filter(t => t.level === level);
+  return themes.find(t => getModuleState(t.id) === 'progress')
+      || themes.find(t => getModuleState(t.id) === 'new')
+      || null;
+}
+
+/* Construit le HTML de la carte "▶ Continuer" affichée en tête de
+   grille — raccourci direct vers openTheme() sans avoir à chercher
+   la bonne carte dans la grille catégorisée. Affiche un message de
+   félicitations à la place si le niveau est déjà entièrement à
+   3 étoiles (aucune action au clic dans ce cas). */
+function _buildContinueCard(level) {
+  const next = _findNextThemeToContinue(level);
+  if (!next) {
+    return '<div class="continue-card continue-card--done">'
+      + '<span class="continue-card-emoji" aria-hidden="true">🏆</span>'
+      + '<div class="continue-card-text">'
+      + '<div class="continue-card-title">' + L('¡Todo completado!', 'Tout est terminé !') + '</div>'
+      + '<div class="continue-card-sub">' + L('Puedes repasar cualquier tema cuando quieras', "Tu peux réviser n'importe quel thème quand tu veux") + '</div>'
+      + '</div></div>';
+  }
+  const { main } = _themeTitle(next);
+  const isNew = getModuleState(next.id) === 'new';
+  const verb = isNew ? L('Empezar', 'Commencer') : L('Seguir con', 'Continuer');
+  return '<button class="continue-card" onclick="openTheme(\'' + next.id + '\')">'
+    + '<span class="continue-card-emoji" aria-hidden="true">' + next.emoji + '</span>'
+    + '<div class="continue-card-text">'
+    + '<div class="continue-card-label">▶ ' + verb + '</div>'
+    + '<div class="continue-card-title">' + main + '</div>'
+    + '</div>'
+    + '<span class="continue-card-arrow" aria-hidden="true">→</span>'
+    + '</button>';
+}
+
+/* Construit le HTML de la grille de thèmes d'un niveau.
+   Niveau 1 : regroupé en catégories repliables (THEME_CATEGORIES).
+   Niveau 2 : grille simple inchangée (16 dialogues). */
+function _buildThemeGridHTML(level) {
+  const themesForLevel = ALL_THEMES.filter(t => t.level === level);
+
+  if (level !== 1) {
+    return themesForLevel.map(t => _buildThemeCard(t)).join('');
+  }
+
+  // Catégorie "en cours" = 1ère catégorie contenant un thème pas
+  // encore à 3 étoiles ; ouverte par défaut avec la suivante, le
+  // reste replié. Si tout est déjà terminé, on ouvre la 1ère.
+  let currentIdx = THEME_CATEGORIES.findIndex(cat =>
+    cat.themeIds.some(id => {
+      const t = themesForLevel.find(x => x.id === id);
+      return t && getModuleState(t.id) !== 'complete';
+    })
+  );
+  if (currentIdx === -1) currentIdx = 0;
+
+  return THEME_CATEGORIES.map((cat, idx) => {
+    const catThemes = cat.themeIds
+      .map(id => themesForLevel.find(t => t.id === id))
+      .filter(Boolean);
+    if (!catThemes.length) return '';
+
+    const catDone = catThemes.filter(t => getModuleState(t.id) === 'complete').length;
+    const isOpen  = (idx === currentIdx || idx === currentIdx + 1);
+
+    return '<details class="theme-category"' + (isOpen ? ' open' : '') + '>'
+      + '<summary class="theme-category-summary">'
+      + '<span class="theme-category-emoji" aria-hidden="true">' + cat.emoji + '</span>'
+      + '<span class="theme-category-label">' + L(cat.labelEs, cat.labelFr) + '</span>'
+      + '<span class="theme-category-count">' + catDone + ' / ' + catThemes.length + '</span>'
+      + '</summary>'
+      + '<div class="themes-grid theme-subgrid">'
+      + catThemes.map(t => _buildThemeCard(t)).join('')
+      + '</div>'
+      + '</details>';
+  }).join('');
+}
 
 function renderSections(activeLevel) {
   if (!ALL_THEMES.length) return;
@@ -2398,17 +2537,17 @@ function renderSections(activeLevel) {
   _fillHeader('');    // IDs sans suffixe → #sections-level1
   _fillHeader('2');   // IDs avec suffixe '2' → #sections-level2
 
-  /* ── Grilles de thèmes ── */
+  /* ── Carte "Continuer" (ajoutée le 26/08/2026, suite) ── */
+  const continueWrap1 = document.getElementById('continueWrap1');
+  const continueWrap2 = document.getElementById('continueWrap2');
+  if (continueWrap1) continueWrap1.innerHTML = _buildContinueCard(1);
+  if (continueWrap2) continueWrap2.innerHTML = _buildContinueCard(2);
+
+  /* ── Grilles de thèmes (Niveau 1 catégorisé, Niveau 2 simple) ── */
   const grid1 = document.getElementById('grid1');
   const grid2 = document.getElementById('grid2');
-  if (grid1) grid1.innerHTML = ALL_THEMES
-    .filter(t => t.level === 1)
-    .map(t => _buildThemeCard(t))
-    .join('');
-  if (grid2) grid2.innerHTML = ALL_THEMES
-    .filter(t => t.level === 2)
-    .map(t => _buildThemeCard(t))
-    .join('');
+  if (grid1) grid1.innerHTML = _buildThemeGridHTML(1);
+  if (grid2) grid2.innerHTML = _buildThemeGridHTML(2);
 }
 
 /* _buildThemeCard(t) — Construit le HTML d'une carte de module.
@@ -2818,7 +2957,43 @@ function renderFlash() {
       + '</div>'
       + _buildMicFeedbackZone();
   }
+
+  _autosizeFlashCard();
 }
+
+/* _autosizeFlashCard() — Corrige un bug de recouvrement des boutons de
+   navigation (← Précédent / Suivant →) sur les cartes à conjugaison
+   (module Verbes) ou à texte long.
+   Cause : .fc-front et .fc-back sont en position:absolute (nécessaire
+   pour l'effet de retournement 3D), donc leur hauteur réelle ne
+   contribue jamais à celle de .fc, qui reste bloquée à min-height:240px.
+   Un contenu plus grand (ex : tableau de conjugaison de 6 lignes) déborde
+   alors visuellement de .fc — et comme .fc est un élément positionné, cet
+   excédent est peint AU-DESSUS du bloc .fc-nav qui suit dans le flux
+   normal (peu importe son ordre dans le DOM), rendant les boutons
+   invisibles ET incliquables sous la zone de débordement.
+   Corrigé le 26/08/2026 (demande utilisateur, signalement maman du
+   09/08/2026 : "module des verbes en espagnol, on ne voit que Ser, on ne
+   peut pas cliquer" — Ser est la 1ère carte du thème et a toujours eu une
+   conjugaison, donc le bug touchait déjà la toute première carte).
+   Solution : on mesure après rendu la hauteur réelle du contenu des deux
+   faces (scrollHeight) et on applique la plus grande valeur à .fc via une
+   hauteur explicite, pour que son propre encombrement dans le flux
+   corresponde à ce qui est réellement affiché — même technique que
+   _resizeOpenAccordions() (§15b) pour les accordéons du Guide. */
+function _autosizeFlashCard() {
+  const fc = document.getElementById('fc');
+  if (!fc) return;
+  const front = fc.querySelector('.fc-front');
+  const back  = fc.querySelector('.fc-back');
+  if (!front || !back) return;
+  fc.style.height = '';
+  const h = Math.max(front.scrollHeight, back.scrollHeight, 240);
+  fc.style.height = h + 'px';
+}
+/* Recalcule aussi au redimensionnement (rotation d'écran, clavier virtuel…) :
+   un texte qui se réenroule sur plus ou moins de lignes change scrollHeight. */
+window.addEventListener('resize', _autosizeFlashCard);
 
 /* buildAlphaDetail(c) — Construit le panneau de détail d'une lettre de l'alphabet.
    Affiche la lettre en grand, son nom dans l'autre langue, et un bouton audio. */

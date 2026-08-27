@@ -37,7 +37,7 @@ Aucune inscription, aucun téléchargement. Fonctionne dans le navigateur et s'i
 
 ## 🗂️ Contenu pédagogique
 
-- **32 thèmes vocabulaire** (Niveau 1) — salutations, couleurs, chiffres, verbes, alimentation…
+- **37 thèmes vocabulaire** (Niveau 1) — salutations, couleurs, chiffres, verbes, adjectifs, connecteurs, quantité/fréquence/temps, argent, alimentation…
 - **16 dialogues de situation** (Niveau 2) — scénarios de la vie quotidienne
 - **~900 paires de mots** par langue (Français ↔ Espagnol)
 - **7 variantes régionales** avec vocabulaire et audio adaptés
@@ -50,9 +50,9 @@ Aucune inscription, aucun téléchargement. Fonctionne dans le navigateur et s'i
 espagnol-fr-es-beta/
 ├── index.html          # Structure HTML unique (SPA — Single Page App)
 ├── css/
-│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 106 lignes)
+│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 545 lignes)
 ├── js/
-│   ├── app.js          # Moteur applicatif complet (178 fonctions nommées, 5 546 lignes)
+│   ├── app.js          # Moteur applicatif complet (182 fonctions nommées, 6 074 lignes)
 │   ├── data-fr.js      # Contenu mode "Apprendre le Français" — chargé à la demande
 │   └── data-es.js      # Contenu mode "Apprendre l'Espagnol" — chargé à la demande
 ├── img/
@@ -156,6 +156,9 @@ python3 -m http.server 8080
 | 21/07/2026 (3e passe) | Corrections (Claude Sonnet 5, demande utilisateur, capture d'écran à l'appui) : logo des écrans Modules encore agrandi (`max-width:260px / width:88%`, boutons icônes de cette ligne légèrement réduits pour lui faire de la place) ; bandeau variante régionale du Guide recoloré (fond clair teinté + texte foncé au lieu de blanc sur blanc, illisible sur le corps blanc de l'écran Guide) et ses marges resserrées pour supprimer l'espace vide ressenti avant « Cómo funciona ». Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 22/07/2026 | ⚠️ Reprise du projet sur des fichiers déjà plus longs que la dernière mesure du 21/07 (écart non documenté au moment des faits, signalé rétroactivement — cf. `Bilan_technique.md`, § Historique). Huit correctifs (Claude Sonnet 5, demande utilisateur, captures d'écran à l'appui pour la plupart) : alignement des pieds de carte de langue (« Sobre/Infos VACHÉBO », qui pouvaient se retrouver à des hauteurs différentes selon la langue) ; réorganisation de l'en-tête de l'écran Modules (titre + drapeau affichés avant les icônes et le logo) ; espace vide supprimé sous le bandeau régional du Guide ; libellé de bouton corrigé dans le Guide espagnol (« Reiniciar » → « Volver a empezar », pour correspondre au vrai bouton de la carte de module) ; aria-label du bouton 🔄 de réinitialisation globale rendu dépendant de la langue de l'apprenant plutôt que figé en français ; z-index des 3 modales de confirmation (dont « Remerciements ») relevé pour qu'elles ne puissent plus être recouvertes visuellement par une notification toast ; et un espacement ajouté à 2 endroits qui semblaient visuellement collés (Lanceur : icônes/« Choisis ta langue » avec les cartes de langue ; Guide : boutons Commencer/PDF avec la carte « L'essentiel en 30 secondes »). Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 23/07/2026 | Le même historique (« HISTORIQUE DE L'APPLICATION ») ajouté dans l'en-tête de `app.js`, à l'identique de la ligne ci-dessous, avec recalcul complet des numéros de ligne du « PLAN DU FICHIER » qui en découlaient (chaque ancre revérifiée une à une par grep). Détail complet dans `Bilan_technique.md` (§ Historique) |
+| 26/08/2026 | Enrichissement du vocabulaire (Claude Sonnet 5, demande utilisateur, à partir d'une liste de manques identifiés pour les grands débutants) : 4 nouvelles rubriques Niveau 1 — Adjectifs de base, Mots de Liaison, Quantité/Fréquence/Temps, L'Argent — plus des ajouts ciblés dans Nombres (ordinaux), Famille, Objets du Quotidien et Santé (renommée « Santé et Sécurité »). 32 → 36 thèmes, en miroir strict dans `data-fr.js`/`data-es.js`. Détail complet dans `Bilan_technique.md` (§ Historique) |
+| 26/08/2026 (suite) | Séparation (Claude Sonnet 5, demande utilisateur) de « Santé et Sécurité » en 2 rubriques distinctes : **La Santé** (21 mots, contenu médical d'origine, id `sante` inchangé) et **La Sécurité** (6 mots : socorro/ayuda, accidente, policía, bomberos, robo, ladrón), nouvelle rubrique insérée juste après. 36 → 37 thèmes. Détail complet dans `Bilan_technique.md` (§ Historique) |
+| 26/08/2026 (suite 2) | Ergonomie (Claude Sonnet 5, demande utilisateur) : la grille à plat des 37 thèmes du Niveau 1 faisait « mur de cartes » et pouvait décourager un grand débutant. Regroupement en **5 catégories thématiques repliables** (🌱 Les Bases, 😊 Décrire & Ressentir, 🏡 Vie Quotidienne, 🚌 Sorties & Situations, 🌍 Le Monde — accordéon `<details>`/`<summary>` natif, seules la catégorie en cours et la suivante dépliées par défaut) et ajout d'une carte **« ▶ Continuer »** en tête de grille (Niveau 1 et 2) menant directement au prochain thème pertinent. Niveau 2 (16 dialogues) laissé en grille simple. Détail complet dans `Bilan_technique.md` (§ Historique) |
 
 ---
 

@@ -1991,6 +1991,92 @@ body {
 }
 .level-block { margin-bottom: 20px; }
 
+/* ── Carte "Continuer" (ajoutée le 26/08/2026, suite, demande
+   utilisateur) — raccourci en tête de grille vers le prochain thème
+   pertinent, pour ne pas obliger à chercher la bonne carte dans la
+   grille catégorisée ci-dessous. Remplie par _buildContinueCard()
+   dans app.js (§7). ── */
+.continue-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: var(--c-primary);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  box-shadow: 0 4px 14px rgba(0,0,0,.16);
+  transition: transform .15s, box-shadow .2s;
+}
+.continue-card:hover         { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+.continue-card:active        { transform: scale(.98); }
+.continue-card-emoji         { font-size: 1.8rem; flex-shrink: 0; }
+.continue-card-text          { flex: 1; min-width: 0; }
+.continue-card-label         { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; opacity: .85; }
+.continue-card-title         { font-size: .95rem; font-weight: 800; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.continue-card-arrow         { font-size: 1.3rem; flex-shrink: 0; opacity: .85; }
+
+/* Variante "tout est terminé" — pas de clic, pas de flèche */
+.continue-card--done {
+  background: var(--c-state-complete-bg);
+  border: 2px solid var(--c-done);
+  color: #1b5e20;
+  cursor: default;
+}
+.continue-card--done .continue-card-sub { font-size: .72rem; opacity: .8; margin-top: 2px; }
+
+/* ── Catégories repliables du Niveau 1 (ajoutées le 26/08/2026,
+   suite, demande utilisateur) — <details>/<summary> natifs : repli/
+   dépli sans JS de toggle dédié, accessible clavier + lecteur
+   d'écran par défaut du navigateur. Seules la catégorie "en cours"
+   et la suivante sont dépliées par défaut (logique dans
+   _buildThemeGridHTML(), app.js §7). ── */
+.theme-category {
+  margin-bottom: 10px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.025);
+  border: 1px solid var(--c-border);
+  overflow: hidden;
+}
+.theme-category-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: .8rem;
+  color: var(--c-text-sub);
+  list-style: none;
+  user-select: none;
+}
+.theme-category-summary::-webkit-details-marker { display: none; }
+.theme-category-summary::marker                 { content: ''; }
+.theme-category-summary::before {
+  content: '▶';
+  font-size: .6rem;
+  color: var(--c-text-sub);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.theme-category[open] > .theme-category-summary::before { transform: rotate(90deg); }
+.theme-category-emoji { font-size: 1.1rem; }
+.theme-category-label { flex: 1; }
+.theme-category-count {
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--c-text-sub);
+  background: rgba(0,0,0,.05);
+  border-radius: 50px;
+  padding: 2px 9px;
+}
+.theme-subgrid { padding: 4px 12px 12px; }
+
 /* ── Accordéon de niveau (Niveau 1 / Niveau 2) ── */
 .level-accordion {
   margin-bottom: 12px;
@@ -4360,6 +4446,12 @@ html.theme-spain.region-VE {
   .theme-card.state-complete { border-color: #4caf50; }
   .t-name  { color: #e0e4f8; }
   .t-sub   { color: var(--c-text-sub); }
+
+  /* ── Carte "Continuer" + catégories repliables (26/08/2026, suite) ── */
+  .continue-card--done      { color: #d7ffd9; }
+  .theme-category           { background: rgba(255,255,255,.03); }
+  .theme-category-summary   { color: #c0c8e8; }
+  .theme-category-count     { background: rgba(255,255,255,.08); color: #c0c8e8; }
 
   /* ── Accordéon de niveau ── */
   .level-accordion  { background: #1a1d30; }

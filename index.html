@@ -497,7 +497,7 @@
     <div class="home-lang-block home-lang-hidden hg-tldr" data-lang="fr">
       <p class="hg-tldr-title">🚀 L'essentiel en 30 secondes</p>
       <ul class="hg-tldr-list">
-        <li>📚 <strong>2 niveaux</strong> : Vocabulaire (32 thèmes) puis Dialogues (16) — Cartes, Quiz, Répète</li>
+        <li>📚 <strong>2 niveaux</strong> : Vocabulaire (37 thèmes) puis Dialogues (16) — Cartes, Quiz, Répète</li>
         <li>🔊 Audio inclus dans les <strong>7 variantes d'espagnol</strong> ; si la voix exacte de ta région n'est pas installée, l'appli utilise automatiquement une autre voix espagnole disponible — normal, pas un bug</li>
         <li>📴 Installable et utilisable <strong>hors-ligne</strong> — sauf 🎤 Répète, qui a toujours besoin d'internet, même une fois installée</li>
         <li>🌐 <strong>Android</strong> : Chrome, Samsung Internet, Edge, Opera, Brave et Vivaldi conviennent tous ; Firefox ne permet jamais 🎤 Répète. <strong>iPhone/iPad</strong> : utilise Safari pour une expérience garantie à 100 %</li>
@@ -507,7 +507,7 @@
     <div class="home-lang-block home-lang-hidden hg-tldr" data-lang="es">
       <p class="hg-tldr-title">🚀 Lo esencial en 30 segundos</p>
       <ul class="hg-tldr-list">
-        <li>📚 <strong>2 niveles</strong> : Vocabulario (32 temas) y luego Diálogos (16) — Tarjetas, Quiz, Repite</li>
+        <li>📚 <strong>2 niveles</strong> : Vocabulario (37 temas) y luego Diálogos (16) — Tarjetas, Quiz, Repite</li>
         <li>🔊 Audio incluido ; si tu dispositivo no tiene instalada una voz en francés, la app usa la <strong>voz por defecto del sistema</strong> — normal, no es un fallo (instálala en 🔊 El audio)</li>
         <li>📴 Instalable y utilizable <strong>sin conexión</strong> — salvo 🎤 Repite, que siempre necesita internet, incluso ya instalada</li>
         <li>🌐 <strong>Android</strong> : Chrome, Samsung Internet, Edge, Opera, Brave y Vivaldi funcionan bien ; Firefox nunca permite 🎤 Repite. <strong>iPhone/iPad</strong> : usa Safari para una experiencia garantizada al 100 %</li>
@@ -1488,6 +1488,11 @@
     </div>
 
     <div class="sections-body">
+      <!-- Carte "Continuer" — ajoutée le 26/08/2026 (suite, demande
+           utilisateur), remplie par _buildContinueCard() dans
+           renderSections() (app.js §7) : raccourci direct vers le
+           prochain thème pertinent. -->
+      <div id="continueWrap1"></div>
       <div class="themes-grid" id="grid1"></div>
     </div>
 
@@ -1563,6 +1568,8 @@
     </div>
 
     <div class="sections-body">
+      <!-- Carte "Continuer" — cf. même bloc sur #sections-level1. -->
+      <div id="continueWrap2"></div>
       <div class="themes-grid" id="grid2"></div>
     </div>
 
