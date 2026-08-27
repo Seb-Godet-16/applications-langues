@@ -50,9 +50,9 @@ Aucune inscription, aucun téléchargement. Fonctionne dans le navigateur et s'i
 espagnol-fr-es-beta/
 ├── index.html          # Structure HTML unique (SPA — Single Page App)
 ├── css/
-│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 545 lignes)
+│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 564 lignes)
 ├── js/
-│   ├── app.js          # Moteur applicatif complet (182 fonctions nommées, 6 074 lignes)
+│   ├── app.js          # Moteur applicatif complet (182 fonctions nommées, 6 118 lignes)
 │   ├── data-fr.js      # Contenu mode "Apprendre le Français" — chargé à la demande
 │   └── data-es.js      # Contenu mode "Apprendre l'Espagnol" — chargé à la demande
 ├── img/
@@ -159,6 +159,7 @@ python3 -m http.server 8080
 | 26/08/2026 | Enrichissement du vocabulaire (Claude Sonnet 5, demande utilisateur, à partir d'une liste de manques identifiés pour les grands débutants) : 4 nouvelles rubriques Niveau 1 — Adjectifs de base, Mots de Liaison, Quantité/Fréquence/Temps, L'Argent — plus des ajouts ciblés dans Nombres (ordinaux), Famille, Objets du Quotidien et Santé (renommée « Santé et Sécurité »). 32 → 36 thèmes, en miroir strict dans `data-fr.js`/`data-es.js`. Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 26/08/2026 (suite) | Séparation (Claude Sonnet 5, demande utilisateur) de « Santé et Sécurité » en 2 rubriques distinctes : **La Santé** (21 mots, contenu médical d'origine, id `sante` inchangé) et **La Sécurité** (6 mots : socorro/ayuda, accidente, policía, bomberos, robo, ladrón), nouvelle rubrique insérée juste après. 36 → 37 thèmes. Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 26/08/2026 (suite 2) | Ergonomie (Claude Sonnet 5, demande utilisateur) : la grille à plat des 37 thèmes du Niveau 1 faisait « mur de cartes » et pouvait décourager un grand débutant. Regroupement en **5 catégories thématiques repliables** (🌱 Les Bases, 😊 Décrire & Ressentir, 🏡 Vie Quotidienne, 🚌 Sorties & Situations, 🌍 Le Monde — accordéon `<details>`/`<summary>` natif, seules la catégorie en cours et la suivante dépliées par défaut) et ajout d'une carte **« ▶ Continuer »** en tête de grille (Niveau 1 et 2) menant directement au prochain thème pertinent. Niveau 2 (16 dialogues) laissé en grille simple. Détail complet dans `Bilan_technique.md` (§ Historique) |
+| 27/08/2026 | Correctif d'affichage (Claude Sonnet 5, demande utilisateur, capture d'écran à l'appui) sur l'écran Modules mis en place la veille : les catégories du Niveau 1 (et les cartes du Niveau 2) héritaient par erreur d'une grille à 2 colonnes pensée pour les cartes individuelles, ce qui les affichait 2 par ligne, deux fois trop étroites. Passage en **colonne unique pleine largeur** pour les 2 niveaux, et une seule catégorie ouverte par défaut au lieu de deux (jugé trop chargé une fois la catégorie en pleine largeur). Détail complet dans `Bilan_technique.md` (§ Historique) |
 
 ---
 
