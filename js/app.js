@@ -1374,6 +1374,20 @@ function _updateVoiceBadge() {
   badge.title     = qualityTitle + ' — ' + _spanishVoiceLabel;
 }
 
+/* _toggleLessonSettings() — Ouvre/ferme le panneau "⚙️ Réglages audio"
+   (badge voix + vitesse + répétition + PDF) sous les onglets de la leçon.
+   Ajouté le 27/08/2026 (demande utilisateur) avec le regroupement de ces
+   réglages, auparavant toujours visibles sur 2 rangées. */
+function _toggleLessonSettings() {
+  const panel = document.getElementById('lessonSettingsPanel');
+  const btn   = document.getElementById('lessonSettingsToggle');
+  if (!panel || !btn) return;
+  const willOpen = panel.hidden; // était fermé → on l'ouvre
+  panel.hidden = !willOpen;
+  btn.setAttribute('aria-expanded', String(willOpen));
+  btn.classList.toggle('lst-open', willOpen);
+}
+
 /* _updateSpeedBar() — Met à jour les boutons de vitesse + les boutons de
    répétition dans la barre persistante. */
 function _updateSpeedBar() {
@@ -1433,26 +1447,58 @@ function _buildSpeedBar() {
     + '</div>';
 }
 
-/* _updateMetaPdfBtn(tab) — Injecte ou retire le bouton PDF dans #meta-pdf-slot selon l'onglet.
+/* _tabHasPdf(tab) — Indique si un export PDF est disponible pour l'onglet
+   donné (flash hors alpha, dialog, vocab). Source unique de vérité,
+   utilisée à la fois pour afficher le bouton PDF (#meta-pdf-slot) et pour
+   mentionner "+ PDF" dans le libellé du bouton "⚙️ Réglages" (ajouté le
+   27/08/2026, demande utilisateur : le libellé doit refléter la présence
+   du PDF, pas seulement de l'audio). */
+function _tabHasPdf(tab) {
+  if (tab === 'flash' && CT?.words && CT.type !== 'alpha') return true;
+  if (tab === 'dialog') return true;
+  if (tab === 'vocab')  return true;
+  return false;
+}
+
+/* _lessonSettingsLabelText(hasPdf) — Texte du bouton "⚙️ Réglages",
+   bilingue, complété par "+ PDF" quand l'export est disponible dans
+   l'onglet courant. */
+function _lessonSettingsLabelText(hasPdf) {
+  const base = L('Ajustes de audio', 'Réglages audio');
+  return hasPdf ? base + ' + PDF' : base;
+}
+
+/* _updateLessonSettingsLabel(hasPdf) — Met à jour le texte du bouton
+   "⚙️ Réglages" sans toucher à son état ouvert/fermé. */
+function _updateLessonSettingsLabel(hasPdf) {
+  const label = document.querySelector('#lessonSettingsToggle .lst-label');
+  if (label) label.textContent = _lessonSettingsLabelText(hasPdf);
+}
+
+/* _updateMetaPdfBtn(tab) — Injecte ou retire le bouton PDF dans #meta-pdf-slot selon l'onglet,
+   et synchronise le libellé du bouton Réglages en conséquence.
    Appelée par switchTab() à chaque changement. PDF : flash (hors alpha), dialog, vocab. */
 function _updateMetaPdfBtn(tab) {
+  const hasPdf = _tabHasPdf(tab);
+  _updateLessonSettingsLabel(hasPdf);
   const slot = document.getElementById('meta-pdf-slot');
   if (!slot) return;
-  let hasPdf = false, onclick = '', ariaLabel = '';
-  if (tab === 'flash' && CT?.words && CT.type !== 'alpha') {
-    hasPdf = true; onclick = '_exportVocab()';
+  let onclick = '', ariaLabel = '';
+  if (tab === 'flash' && hasPdf) {
+    onclick = '_exportVocab()';
     ariaLabel = L('Exportar vocabulario PDF', 'Exporter le vocabulaire PDF');
   } else if (tab === 'dialog') {
-    hasPdf = true; onclick = '_exportSituation()';
+    onclick = '_exportSituation()';
     ariaLabel = L('Exportar situación PDF', 'Exporter la situation PDF');
   } else if (tab === 'vocab') {
-    hasPdf = true; onclick = '_exportVocab()';
+    onclick = '_exportVocab()';
     ariaLabel = L('Exportar vocabulario PDF', 'Exporter le vocabulaire PDF');
   }
   slot.innerHTML = hasPdf
     ? '<button class="export-pdf-btn export-pdf-btn--meta" onclick="' + onclick + '" aria-label="' + ariaLabel + '">📄 PDF</button>'
     : '';
 }
+
 
 // §3c — Interruption TTS + micro à la mise en arrière-plan
 // Corrigé le 07/07/2026 : le TTS était bien coupé (speechSynthesis.cancel()),
@@ -2793,7 +2839,27 @@ function openTheme(id) {
   const badgeHtml = (currentMode === 'learn_spain')
     ? '<div id="voice-quality-badge" class="voice-quality-badge vqb-pending" title="">🇪🇸 <span class="vqb-label">Espagne (Castillan)…</span></div>'
     : '<div id="voice-quality-badge" class="voice-quality-badge vqb-exact">🇫🇷 <span class="vqb-label">Voix Français</span></div>';
-  lessonMeta.innerHTML = badgeHtml + _buildSpeedBar();
+
+  // Regroupement badge voix + vitesse + répétition + PDF derrière un seul
+  // bouton "⚙️ Réglages audio" replié par défaut (demande utilisateur
+  // 27/08/2026) : ces réglages sont consultés ponctuellement, pas à
+  // chaque carte — les afficher en permanence sur 2 rangées surchargeait
+  // l'écran dès l'ouverture d'une leçon. Le panneau garde exactement le
+  // même contenu (badge + _buildSpeedBar(), PDF compris via son slot
+  // #meta-pdf-slot) : rien n'est supprimé, tout reste accessible en 1 tap.
+  // Replié à chaque nouvelle ouverture de leçon (pas de mémorisation
+  // d'état entre thèmes, pour rester simple et prévisible).
+  const settingsLabel = _lessonSettingsLabelText(_tabHasPdf(initialTab));
+  lessonMeta.innerHTML =
+      '<button type="button" class="lesson-settings-toggle" id="lessonSettingsToggle" '
+    + 'onclick="_toggleLessonSettings()" aria-expanded="false" aria-controls="lessonSettingsPanel">'
+    +   '<span class="lst-icon" aria-hidden="true">⚙️</span>'
+    +   '<span class="lst-label">' + settingsLabel + '</span>'
+    +   '<span class="lst-chevron" aria-hidden="true">▾</span>'
+    + '</button>'
+    + '<div class="lesson-settings-panel" id="lessonSettingsPanel" hidden>'
+    +   badgeHtml + _buildSpeedBar()
+    + '</div>';
 
   // Résolution immédiate du badge (si voix déjà résolue)
   _updateVoiceBadge();
@@ -2950,7 +3016,12 @@ function renderFlash() {
 
   /* — MODE Français : Recto = FR, Verso = ES — */
   if (isFrench()) {
-    const hintFr = L('Haz clic para ver su significado en español', '');
+    // Note (27/08/2026) : l'indice "cliquez pour voir la traduction" a été
+    // retiré d'ici — il répétait exactement la consigne déjà donnée dans
+    // le bandeau .section-label juste au-dessus ("… · Haz clic para
+    // volver !"), et n'apparaissait de toute façon jamais sur les cartes
+    // de conjugaison (branche hasConj ci-dessous). Une seule consigne,
+    // valable pour tous les types de carte, suffit.
     if (hasConj) {
       // Carte conjugaison : affiche le tableau de conjugaison des deux côtés
       frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(card.fr, 'fcword') + '</div>'
@@ -2960,8 +3031,7 @@ function renderFlash() {
         + '<div class="fc-conj">' + card.conj.es.map((l) => {
             return '<div class="fc-conj-line">' + l + '</div>'; }).join('') + '</div>';
     } else {
-      frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(card.fr, 'fcword') + '</div>'
-        + '<div class="fc-front-hint">👆 ' + hintFr + '</div>';
+      frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(card.fr, 'fcword') + '</div>';
       backContent  = emBk + '<div class="fc-back-word">' + finalEsWord + '</div>';
     }
 
@@ -2989,7 +3059,9 @@ function renderFlash() {
 
   /* — MODE Espagnol : Recto = ES (variante), Verso = FR — */
   } else {
-    const hintEs = L('', 'Cliquez pour voir la traduction en français');
+    // Note (27/08/2026) : même retrait que côté français ci-dessus — la
+    // consigne "cliquez pour voir la traduction" reste dans .section-label
+    // uniquement, plutôt que dupliquée ici.
     if (hasConj) {
       frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(finalEsWord, 'fcword') + '</div>'
         + '<div class="fc-conj">' + card.conj.es.map((l) => {
@@ -2998,8 +3070,7 @@ function renderFlash() {
         + '<div class="fc-conj">' + card.conj.fr.map((l) => {
             return '<div class="fc-conj-line">' + l + '</div>'; }).join('') + '</div>';
     } else {
-      frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(finalEsWord, 'fcword') + '</div>'
-        + '<div class="fc-front-hint">👆 ' + hintEs + '</div>';
+      frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(finalEsWord, 'fcword') + '</div>';
       backContent  = emBk + '<div class="fc-back-word">' + card.fr + '</div>';
     }
 
@@ -3056,7 +3127,7 @@ function _autosizeFlashCard() {
   const back  = fc.querySelector('.fc-back');
   if (!front || !back) return;
   fc.style.height = '';
-  const h = Math.max(front.scrollHeight, back.scrollHeight, 240);
+  const h = Math.max(front.scrollHeight, back.scrollHeight, 190); // 240 → 190 (27/08/2026, carte réduite)
   fc.style.height = h + 'px';
 }
 /* Recalcule aussi au redimensionnement (rotation d'écran, clavier virtuel…) :

@@ -2443,10 +2443,10 @@ body {
 
 .lesson-header {
   background: var(--c-grad-lesson);
-  padding: 14px 16px;
+  padding: 9px 14px; /* 14px 16px → 9px 14px le 27/08/2026 (demande utilisateur, header réduit) */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
   flex-wrap: nowrap; /* Bug 9.6 : empêche tout retour à la ligne des flèches */
 }
@@ -2470,7 +2470,7 @@ body {
   overflow: visible;
   white-space: normal;
   word-break: break-word;
-  font-size: clamp(0.82rem, 3.8vw, 1rem);
+  font-size: clamp(0.76rem, 3.4vw, 0.92rem); /* légèrement réduit le 27/08/2026 avec le header */
 }
 
 /* Bug 9.6 — Éléments à taille fixe du header de leçon : ne doivent jamais
@@ -2492,13 +2492,13 @@ body {
    à sa gauche (les deux appelaient lessonGoBack()). Classe renommée
    .lesson-home-btn → .lesson-quit-btn, gabarit visuel conservé. */
 .lesson-quit-btn {
-  font-size: 1.1rem !important;
-  padding: 4px 6px !important;
+  font-size: 1rem !important; /* 1.1rem → 1rem le 27/08/2026, header réduit */
+  padding: 3px 5px !important;
   opacity: 0.9;
 }
 .lesson-quit-btn:active { opacity: 0.6; }
 
-.lesson-nav-btn { background:none; border:none; font-size:1.8rem; color:var(--c-primary); cursor:pointer; padding:0 8px; line-height:1; opacity:0.7; flex-shrink:0; }
+.lesson-nav-btn { background:none; border:none; font-size:1.5rem; color:var(--c-primary); cursor:pointer; padding:0 6px; line-height:1; opacity:0.7; flex-shrink:0; } /* 1.8rem → 1.5rem le 27/08/2026 */
 .lesson-nav-btn:hover { opacity:1; }
 
 .lesson-body {
@@ -2530,6 +2530,12 @@ body {
   font-size: 1rem !important;
   font-weight: 800 !important;
   color: #fff !important;
+}
+/* Header de leçon réduit le 27/08/2026 (demande utilisateur) : bouton
+   retour légèrement plus petit ici uniquement (Sections non concerné). */
+.lesson-header .back-btn {
+  font-size: .9rem !important;
+  padding: 3px 6px;
 }
 
 /* Correctif alignement : le bouton retour peut contenir deux lignes
@@ -2622,7 +2628,7 @@ body {
 
 .fc {
   width: 100%;
-  min-height: 240px;
+  min-height: 190px; /* 240px → 190px le 27/08/2026 (demande utilisateur, carte plus compacte) */
   border-radius: 20px;
   position: relative;
   transform-style: preserve-3d;
@@ -2636,7 +2642,7 @@ body {
 .fc-back {
   position: absolute;
   width: 100%;
-  min-height: 240px;
+  min-height: 190px; /* idem .fc — synchronisé le 27/08/2026 */
   border-radius: 20px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -2644,7 +2650,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 16px;
+  padding: 16px 16px; /* 20px → 16px en haut/bas, carte un peu plus compacte */
 }
 
 /* Face avant */
@@ -2659,7 +2665,17 @@ body {
 .fc-back-word       { font-size: 1.9rem; font-weight: 900; text-align: center; line-height: 1.3; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
 .fc-back-hint       { font-size: .72rem; opacity: .7; margin-top: 10px; letter-spacing: .5px; }
 
-/* Lignes de conjugaison (visibles sur les deux faces) */
+/* Cartes à conjugaison (module Verbes) : contenu plus dense (6 lignes),
+   on leur garde un peu plus d'air que les cartes mot simple — la carte
+   entière reste de toute façon auto-dimensionnée sur le vrai contenu par
+   _autosizeFlashCard() (JS), ceci n'est qu'un confort visuel. Ajouté le
+   27/08/2026 suite à un test demandé sur les verbes après réduction
+   générale du padding de .fc-front/.fc-back. */
+.fc-front:has(.fc-conj),
+.fc-back:has(.fc-conj) {
+  padding-top: 18px;
+  padding-bottom: 20px;
+}
 .fc-conj            { margin-top: 10px; width: 100%; text-align: left; padding: 0 4px; }
 .fc-conj-line       { font-size: .78rem; line-height: 1.6; color: inherit; border-bottom: 1px solid rgba(255,255,255,.15); padding: 2px 0; }
 .fc-front .fc-conj-line { color: #444; border-bottom-color: rgba(0,0,0,.08); }
@@ -2742,17 +2758,63 @@ body {
 .offline-banner-text { flex: 1; }
 
 /* ════════════════════════════════════════
-   BARRE META LEÇON (badge voix + vitesse)
-   Affichée entre les onglets et le contenu
+   BARRE META LEÇON (bannière hors-ligne + réglages)
+   Affichée entre les onglets et le contenu.
+   Passée en colonne le 27/08/2026 (demande utilisateur) : contient
+   désormais, de haut en bas, la bannière hors-ligne (si présente), le
+   bouton "⚙️ Réglages audio", puis le panneau repliable (badge voix +
+   vitesse + répétition + PDF) — au lieu des 2 rangées toujours visibles.
 ════════════════════════════════════════ */
 .lesson-meta-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 8px;
   margin-bottom: 10px;
-  flex-wrap: wrap;
 }
+
+/* ── Bouton "⚙️ Réglages audio" — replié par défaut ── */
+.lesson-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  background: #f0f0f0;
+  border: 1.5px solid #ccc;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  min-height: 34px;
+  transition: background .15s, border-color .15s;
+}
+.lesson-settings-toggle:hover { background: #e6e6e6; }
+.lesson-settings-toggle.lst-open {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: #fff;
+}
+.lst-chevron {
+  display: inline-block;
+  transition: transform .2s ease;
+  font-size: .7rem;
+}
+.lesson-settings-toggle.lst-open .lst-chevron { transform: rotate(180deg); }
+
+/* ── Panneau repliable : mêmes contenus/styles qu'avant (badge + vitesse +
+   répétition + PDF), simplement masqués tant que le bouton n'est pas
+   ouvert (attribut [hidden], pas de classe à gérer en plus). ── */
+.lesson-settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+.lesson-settings-panel[hidden] { display: none; }
 
 /* ── Badge de qualité de voix ── */
 .voice-quality-badge {
@@ -5467,7 +5529,7 @@ footer .footer-antispam-btn           { color: var(--c-vache-brown); }
   .sections-top-right { gap: 2px; } /* ajouté 19/07/2026 avec le bouton Quitter */
 
   /* ── En-tête + pied de page écran Leçon ── */
-  .lesson-header { padding: 8px 14px; }
+  .lesson-header { padding: 6px 12px; } /* 8px 14px → 6px 12px le 27/08/2026 (demande utilisateur) */
   .lesson-footer { padding: 5px 12px 6px; font-size: .6rem; }
 }
 
