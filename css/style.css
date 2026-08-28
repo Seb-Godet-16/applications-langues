@@ -3388,6 +3388,24 @@ h1 .translation-sub {
   margin-top: 4px !important;
 }
 
+/* Version encore plus petite dans les flashcards Verbes (.fc-back-word /
+   .fc-front-word, mot principal en 1.9rem) : la règle générale 0.75em
+   ci-dessus donnait ~1.4rem pour l'exemple entre parenthèses des
+   définitions comme "Être (permanent, identité : soy español = je suis
+   espagnol)" — encore trop imposant à côté du mot principal. Alignée ici
+   sur .fc-conj-line (.78rem), la même famille de texte secondaire déjà
+   utilisée juste en dessous sur la même carte pour les traductions de
+   conjugaison ("Je suis", "Tu es"…), pour une taille cohérente sur toute
+   la carte plutôt que 2 tailles de "petit texte" différentes. Ajouté le
+   28/08/2026 (demande utilisateur, 2ᵉ passe après un 1ᵉʳ ajustement à
+   0.75em jugé encore trop grand). */
+.fc-back-word .translation-sub,
+.fc-front-word .translation-sub {
+  font-size: 0.42em; /* ≈ .78rem dans le contexte 1.9rem de .fc-back-word/.fc-front-word */
+  opacity: 0.85;
+  margin-top: 6px;
+}
+
 /* Hint bilingue discret dans les boutons retour */
 .fr-hint { font-size: .65rem; color: #ffffff99; font-weight: 400; }
 
