@@ -42,13 +42,37 @@
                                catégories repliables au Niveau 2 : les
                                16 dialogues regroupés en 4 rubriques
                                (LEVEL2_CATEGORIES) avec Claude Sonnet 5.
+     28/08/2026               Trois correctifs visuels sur les flashcards
+                               (captures d'écran à l'appui, demande
+                               utilisateur) : (1) bandeau .section-label
+                               ("Cliquez : Recto/Verso...") tient sur une
+                               seule ligne dans le cas courant — retrait
+                               de l'uppercase/letter-spacing (responsable
+                               du passage à 2 lignes) + légère baisse de
+                               taille (.7rem → .65rem), tout en gardant le
+                               repli sur 2 lignes pour les noms de région
+                               trop longs (ex. "Espagne (Castillan)") ;
+                               (2) espace vide réduit sous les boutons
+                               audio/micro (.mic-feedback : 28px → 14px) ;
+                               (3) exemple bilingue entre parenthèses des
+                               définitions verbes (nouvelle fonction
+                               _styleExampleParen() dans app.js) affiché
+                               en plus petit sur le verso espagnol des
+                               flashcards — concerne 15 définitions par
+                               fichier de données (Ser, Estar, Querer,
+                               Poder, Deber, Saber, Conocer, Venir,
+                               Acabar, Esperar, Pedir, Costar, Todavía,
+                               Doler/Me duele, Cent), pas seulement
+                               Ser/Estar comme diagnostiqué dans un
+                               premier temps (cf. Bilan_technique.md
+                               § Historique) — avec Claude Sonnet 5.
    ============================================================
    ARCHITECTURE (5 fichiers) :
      ├─ index.html  → Structure HTML + launcher (5 écrans, 3 modales)
      ├─ style.css   → Thèmes couleur, composants visuels (51 variables CSS, 179 décl.)
      ├─ data-fr.js  → ALL_THEMES_FR (37 thèmes + 16 dialogues) — chargé à la demande
      ├─ data-es.js  → ALL_THEMES_ES (37 thèmes + 16 dialogues) — chargé à la demande
-     └─ app.js      → Ce fichier : logique applicative complète (6 142 lignes)
+     └─ app.js      → Ce fichier : logique applicative complète (6 342 lignes le 28/08/2026 — chiffre à revérifier périodiquement, cf. note du PLAN DU FICHIER ci-dessous)
 
    PLAN DU FICHIER (recalculé le 27/08/2026, dans la continuité du
    recalcul du même jour ci-dessus : ajout de LEVEL2_CATEGORIES et
@@ -68,6 +92,17 @@
    suite. Compteurs ARCHITECTURE ci-dessus inchangés pour style.css
    (51 variables CSS/179 décl., recompté par grep avant/après édition,
    aucune nouvelle variable) :
+   ⚠️ NON RECALCULÉ le 28/08/2026 : plusieurs correctifs ponctuels
+   (repérables aux commentaires datés "28/08/2026" dans le fichier,
+   dont les 3 de la nouvelle entrée HISTORIQUE ci-dessus — notamment
+   l'ajout de _styleExampleParen(), ~28 lignes, juste après renderFlash()
+   en §9) ont décalé les lignes sans repasser par la revérification par
+   grep décrite ci-dessus. Un écart plus large et déjà présent AVANT ces
+   correctifs a d'ailleurs été mesuré à cette occasion (ex. renderFlash()
+   réellement en L.3032 contre L.2893 indiqué plus bas) : les ancres de
+   ce plan étaient donc déjà en dérive avant même cette session. Un
+   recalcul complet (hors périmètre de la présente demande) reste à
+   faire — voir aussi la note équivalente en tête de style.css.
      §0    L.  198  Chargement conditionnel des données — loadDataForMode()
      §0b   L.  223  Helpers globaux — showResetConfirm(), _launchConfetti(), spinner
      §1    L.  385  Variables d'état globales
@@ -3124,12 +3159,12 @@ function renderFlash() {
       frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(finalEsWord, 'fcword') + '</div>'
         + '<div class="fc-conj">' + card.conj.es.map((l) => {
             return '<div class="fc-conj-line">' + l + '</div>'; }).join('') + '</div>';
-      backContent  = emBk + '<div class="fc-back-word">' + card.fr + '</div>'
+      backContent  = emBk + '<div class="fc-back-word">' + _styleExampleParen(card.fr) + '</div>'
         + '<div class="fc-conj">' + card.conj.fr.map((l) => {
             return '<div class="fc-conj-line">' + l + '</div>'; }).join('') + '</div>';
     } else {
       frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(finalEsWord, 'fcword') + '</div>';
-      backContent  = emBk + '<div class="fc-back-word">' + card.fr + '</div>';
+      backContent  = emBk + '<div class="fc-back-word">' + _styleExampleParen(card.fr) + '</div>';
     }
 
     const regionLabelsES = { ES:'🇪🇸 Espagne (Castillan)', MX:'🇲🇽 Mexique', CO:'🇨🇴 Colombie', AR:'🇦🇷 Argentine', PE:'🇵🇪 Pérou', VE:'🇻🇪 Venezuela', EC:'🇪🇨 Équateur' };
@@ -3156,6 +3191,36 @@ function renderFlash() {
   }
 
   _autosizeFlashCard();
+}
+
+/* _styleExampleParen(text) — Repère, dans une définition affichée sur le
+   verso espagnol des flashcards (.fc-back-word, cas Recto ES / Verso FR
+   ci-dessus), la dernière parenthèse contenant un exemple bilingue traduit
+   (repérée par un signe "=", ex. "Être (permanent, identité : soy español
+   = je suis espagnol)"), et l'entoure de la classe .translation-sub pour
+   l'afficher dans une taille réduite — cohérente avec le sous-titre de
+   traduction déjà utilisé ailleurs dans l'app (cf. .translation-sub, bloc
+   TRADUCTIONS BILINGUES INLINE dans style.css) — plutôt qu'à la taille du
+   mot principal (1.9rem, .fc-back-word). Les parenthèses purement
+   grammaticales sans "=" (ex. "(invariable)", "(pluriel)") ne déclenchent
+   rien et restent affichées telles quelles, à la même taille que le reste.
+   Concerne 15 définitions par fichier de données (data-fr.js/data-es.js) :
+   Ser, Estar, Querer, Poder, Deber, Saber, Conocer, Venir, Acabar,
+   Esperar, Pedir, Costar, Todavía, Doler/Me duele, et le nombre Cent —
+   pas seulement Ser/Estar comme diagnostiqué dans un premier temps lors du
+   signalement du 28/08/2026 (cf. Bilan_technique.md § Historique).
+   ⚠️ Volontairement appliqué UNIQUEMENT à backContent ci-dessus (texte
+   affiché) : ne jamais appliquer sur le texte transmis à speak() /
+   _buildMicButton(), qui doivent rester du texte brut sans balise HTML
+   pour la synthèse et la reconnaissance vocale. Idem côté recto (mode
+   Apprendre le Français, où ce même texte card.fr passe par
+   _buildSpeakableHTML() pour le surlignage mot par mot pendant la
+   lecture) : non touché ici pour ne pas risquer de casser ce surlignage,
+   qui repère les mots par découpage du texte brut plutôt que du HTML.
+   Ajouté le 28/08/2026 (demande utilisateur). */
+function _styleExampleParen(text) {
+  if (!text) return text;
+  return text.replace(/\(([^()]*=[^()]*)\)/g, '<span class="translation-sub">($1)</span>');
 }
 
 /* _autosizeFlashCard() — Corrige un bug de recouvrement des boutons de

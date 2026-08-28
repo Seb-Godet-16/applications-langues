@@ -73,6 +73,15 @@
  * ║         Ajouts Juin 2026                         ligne 4464           ║
  * ║   §27-bis (ajout 08/07) Leçon 2 colonnes desktop ligne 4660           ║
  * ║         (numéro "27" déjà pris plus haut ; collision préexistante)   ║
+ * ╠══════════════════════════════════════════════════════════════════╣
+ * ║  ⚠️ NON RECALCULÉ depuis le 19/07/2026 : le fichier a grossi de     ║
+ * ║  ~965 lignes depuis (179 décl./51 var. CSS toujours exactes, mais  ║
+ * ║  les numéros de ligne ci-dessus ne le sont plus — ex. §16 Modales  ║
+ * ║  réellement bien après la ligne 2627 indiquée). Les correctifs du  ║
+ * ║  28/08/2026 (.section-label, .mic-feedback, cf. commentaires datés ║
+ * ║  dans le corps du fichier) ajoutent à ce décalage préexistant sans ║
+ * ║  le corriger — recalcul complet hors périmètre de cette demande,  ║
+ * ║  cf. note équivalente en tête d'app.js.                            ║
  * ╚══════════════════════════════════════════════════════════════════╝
  */
 
@@ -2598,19 +2607,24 @@ body {
 
 /* Petite étiquette de section au-dessus du contenu (ex : "Recto / Verso") */
 .section-label {
-  font-size: .7rem;
+  font-size: .65rem; /* .7rem → .65rem le 28/08/2026 (demande utilisateur) : marge de sécurité supplémentaire pour que le bandeau flashcards ("Cliquez : Recto Espagnol ... - Verso Français") tienne sur une ligne sur les écrans étroits, en plus du retrait de l'uppercase/letter-spacing ci-dessous (le principal responsable du passage à 2 lignes). Le nom de variante le plus long ("Espagne (Castillan)") peut malgré tout continuer à passer sur 2 lignes sur les téléphones les plus étroits : c'est volontaire (cf. note ci-dessous, ne jamais couper le nom de la région). */
   color: #888;
   text-align: center;
   margin: 0 0 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none; /* était uppercase — supprimé le 28/08/2026 (demande utilisateur) : combiné à letter-spacing:1px, forçait le bandeau des flashcards sur 2 lignes */
+  letter-spacing: normal; /* était 1px — même correctif du 28/08/2026 */
 }
 
 /* Symbole mascotte régional à côté du nom de variante sur les cartes flash
    (§9 renderFlash() dans app.js), dans les deux sens de carte — cohérent
-   avec .hrw-chip-mascot (§6/§15) et .launcher-region-mascot (§15). Pas de
-   text-transform/letter-spacing hérités de .section-label pour garder
-   l'emoji net. Ajouté le 20/07/2026 (demande utilisateur). */
+   avec .hrw-chip-mascot (§6/§15) et .launcher-region-mascot (§15). À
+   l'origine (20/07/2026), ce garde-fou neutralisait le text-transform/
+   letter-spacing hérités de .section-label pour garder l'emoji net.
+   Depuis le 28/08/2026, .section-label n'a elle-même plus ces deux
+   propriétés (retirées pour que son bandeau flashcards tienne sur une
+   ligne) : ce garde-fou n'a donc plus d'effet concret aujourd'hui, mais
+   reste en place par prudence si .section-label était retouchée plus
+   tard. Ajouté le 20/07/2026 (demande utilisateur). */
 .fc-region-mascot {
   text-transform: none;
   letter-spacing: normal;
@@ -3023,7 +3037,7 @@ body {
 /* Zone de feedback (résultat de la reconnaissance) */
 .mic-feedback {
   width: 100%;
-  min-height: 28px;
+  min-height: 14px; /* 28px → 14px le 28/08/2026 (demande utilisateur) : zone vide jugée trop grande entre les boutons audio/micro et l'astuce .mic-hint sur les flashcards. Hauteur réservée réduite plutôt que supprimée, pour limiter (sans l'annuler) le saut de mise en page quand un résultat ✅/🔁 apparaît ensuite. */
   text-align: center;
   font-size: .84rem;
   font-weight: 600;
@@ -5418,7 +5432,14 @@ footer .footer-antispam-btn           { color: var(--c-vache-brown); }
   flex-wrap: wrap;
 }
 
-/* ── section-label : ne pas couper le nom de la région ── */
+/* ── section-label : ne pas couper le nom de la région ──
+   Reste actif après le 28/08/2026 (retrait de l'uppercase/letter-spacing
+   + réduction de taille de .section-label, cf. plus haut dans ce fichier,
+   pour que le bandeau flashcards tienne sur une ligne dans le cas
+   courant) : ce filet de sécurité garantit que si un nom de variante
+   trop long (ex. "Espagne (Castillan)") ne rentre malgré tout pas sur
+   une ligne sur un écran étroit, il passe à la ligne plutôt que d'être
+   tronqué. */
 .section-label {
   white-space: normal !important;
   word-break: normal;

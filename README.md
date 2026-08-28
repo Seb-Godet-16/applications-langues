@@ -50,9 +50,9 @@ Aucune inscription, aucun téléchargement. Fonctionne dans le navigateur et s'i
 espagnol-fr-es-beta/
 ├── index.html          # Structure HTML unique (SPA — Single Page App)
 ├── css/
-│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 564 lignes)
+│   └── style.css       # Thèmes couleur, composants, animations (51 variables CSS, 179 déclarations, 5 647 lignes au 28/08/2026)
 ├── js/
-│   ├── app.js          # Moteur applicatif complet (182 fonctions nommées, 6 142 lignes)
+│   ├── app.js          # Moteur applicatif complet (188 fonctions nommées, 6 353 lignes au 28/08/2026)
 │   ├── data-fr.js      # Contenu mode "Apprendre le Français" — chargé à la demande
 │   └── data-es.js      # Contenu mode "Apprendre l'Espagnol" — chargé à la demande
 ├── img/
@@ -161,6 +161,7 @@ python3 -m http.server 8080
 | 26/08/2026 (suite 2) | Ergonomie (Claude Sonnet 5, demande utilisateur) : la grille à plat des 37 thèmes du Niveau 1 faisait « mur de cartes » et pouvait décourager un grand débutant. Regroupement en **5 catégories thématiques repliables** (🌱 Les Bases, 😊 Décrire & Ressentir, 🏡 Vie Quotidienne, 🚌 Sorties & Situations, 🌍 Le Monde — accordéon `<details>`/`<summary>` natif, seules la catégorie en cours et la suivante dépliées par défaut) et ajout d'une carte **« ▶ Continuer »** en tête de grille (Niveau 1 et 2) menant directement au prochain thème pertinent. Niveau 2 (16 dialogues) laissé en grille simple. Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 27/08/2026 | Correctif d'affichage (Claude Sonnet 5, demande utilisateur, capture d'écran à l'appui) sur l'écran Modules mis en place la veille : les catégories du Niveau 1 (et les cartes du Niveau 2) héritaient par erreur d'une grille à 2 colonnes pensée pour les cartes individuelles, ce qui les affichait 2 par ligne, deux fois trop étroites. Passage en **colonne unique pleine largeur** pour les 2 niveaux, et une seule catégorie ouverte par défaut au lieu de deux (jugé trop chargé une fois la catégorie en pleine largeur). Détail complet dans `Bilan_technique.md` (§ Historique) |
 | 27/08/2026 (suite) | Extension (Claude Sonnet 5, demande utilisateur : « pour aider l'apprenant ») du même principe de catégories repliables au **Niveau 2** : les 16 dialogues, jusqu'ici en grille simple, sont désormais regroupés en **4 rubriques thématiques** (👋 Premiers Contacts, 🧭 Se Déplacer & Climat, 🍽️ Sorties & Consommation, 🏠 Vie Quotidienne & Santé), avec le même accordéon `<details>`/`<summary>` et la même catégorie « en cours » ouverte par défaut qu'au Niveau 1. Détail complet dans `Bilan_technique.md` (§ Historique) |
+| 28/08/2026 | Trois correctifs visuels sur les flashcards (Claude Sonnet 5, demande utilisateur, captures d'écran à l'appui) : bandeau « Cliquez : Recto/Verso... » qui passait sur 2 lignes ramené sur une ligne dans le cas courant (retrait de l'uppercase/letter-spacing responsable du passage à la ligne + légère baisse de taille), tout en conservant le repli sur 2 lignes pour les noms de région trop longs (« Espagne (Castillan) ») ; espace vide sous les boutons audio/micro réduit de moitié ; et exemple bilingue entre parenthèses des définitions verbes (`Ser`, `Estar` et 13 autres — pas seulement ces 2-là comme identifié dans un premier temps) affiché en plus petit sur le verso espagnol des flashcards plutôt qu'à la taille du mot principal. Détail complet dans `Bilan_technique.md` (§ Historique) |
 
 ---
 
