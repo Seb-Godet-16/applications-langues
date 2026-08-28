@@ -693,6 +693,13 @@ function _setLauncherFooterLang(mode) {
  * Masque tous les écrans et réaffiche le Launcher avec la Vue A.
  */
 function showLauncher() {
+  // Ajouté le 28/08/2026 (demande utilisateur) : cette fonction ne passe
+  // ni par showScreen() ni par _showScreenNoRender() (elle bascule les
+  // classes .active directement) et n'avait donc aucun nettoyage — quitter
+  // une leçon vers l'écran d'accueil (via le bouton Quitter notamment)
+  // laissait la voix ET le micro tourner sans possibilité de les arrêter.
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   /* Réinitialise le mode et le thème visuel UNIQUEMENT quand on revient au launcher */
   currentMode = '';
   document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); });
@@ -1302,6 +1309,30 @@ function _doSpeak(txt, voiceObj, rate, triggerBtn, opts) {
       speechSynthesis.speak(u);
     }
     speakPart(0, 0);
+  });
+}
+
+/* _stopSpeaking() — Arrête immédiatement toute synthèse vocale en cours
+   (bouton 🔊 Écouter), quel que soit l'endroit de l'app où l'utilisateur
+   navigue ensuite.
+   Ajouté le 28/08/2026 (demande utilisateur) : jusqu'ici,
+   speechSynthesis.cancel() n'était appelé qu'au tout début d'une NOUVELLE
+   lecture (dans _doSpeak) ou quand l'app entière passait en arrière-plan
+   (visibilitychange) — jamais lors d'une navigation interne (carte
+   retournée, mot suivant/précédent, changement d'onglet, retour arrière,
+   changement de module, quitter la leçon…). La voix continuait alors
+   toute seule, sans qu'aucun bouton visible ne permette de l'arrêter.
+   Incrémente _ttsGen pour invalider tout onDone/onboundary en attente
+   d'un appel _doSpeak précédent (même mécanisme que speechSynthesis.cancel()
+   côté onend, cf. _doSpeak ci-dessus), et retire l'état visuel
+   "is-speaking" de n'importe quel bouton déclencheur encore marqué actif. */
+function _stopSpeaking() {
+  if (window.speechSynthesis) {
+    speechSynthesis.cancel();
+  }
+  _ttsGen++;
+  document.querySelectorAll('.is-speaking').forEach((el) => {
+    el.classList.remove('is-speaking');
   });
 }
 
@@ -2084,6 +2115,16 @@ const _SCREEN_ORDER = ['app-launcher', 'home', 'sections-level1', 'sections-leve
  * À utiliser quand le rendu a déjà été fait juste avant (lessonGoBack, navGoModules).
  */
 function _showScreenNoRender(id, dir) {
+  // Ajouté le 28/08/2026 (demande utilisateur) : cette fonction n'avait
+  // jusqu'ici AUCUN nettoyage audio/micro (contrairement à showScreen()
+  // corrigé le 07/07/2026 pour le micro) alors qu'elle est utilisée par
+  // lessonGoBack() et navGoModules() — quitter une leçon par ces chemins
+  // laissait la voix ET le micro tourner sans possibilité de les arrêter.
+  const _curEl = document.querySelector('.screen.active');
+  if (_curEl && _curEl.id !== id) {
+    _stopSpeaking();
+    if (typeof _rpClearTimers === 'function') _rpClearTimers();
+  }
   if (_screenTransitionTimer) { clearTimeout(_screenTransitionTimer); _screenTransitionTimer = null; }
   document.querySelectorAll('.screen').forEach((s) => {
     s.classList.remove('active', 'slide-out-left', 'slide-out-right', 'slide-in-right', 'slide-in-left');
@@ -2117,8 +2158,11 @@ function showScreen(id, dir) {
   // reconnaissance vocale tourner en arrière-plan. On la coupe systématiquement
   // dès qu'on change réellement d'écran, en plus du filet de sécurité posé sur
   // 'visibilitychange' pour le cas où l'app entière passe en arrière-plan.
-  if (currentId && currentId !== id && typeof _rpClearTimers === 'function') {
-    _rpClearTimers();
+  // Étendu le 28/08/2026 (demande utilisateur) : même chose pour la voix
+  // (🔊 Écouter), qui n'était coupée dans aucun de ces cas jusqu'ici.
+  if (currentId && currentId !== id) {
+    _stopSpeaking();
+    if (typeof _rpClearTimers === 'function') _rpClearTimers();
   }
 
   // Quitter le guide (#home) pour un autre écran = onboarding "vu" POUR CE
@@ -2738,6 +2782,14 @@ function _buildThemeCard(t) {
 ═══════════════════════════════════════════════════════════ */
 
 function openTheme(id) {
+  // Ajouté le 28/08/2026 (demande utilisateur) : lessonNav() (flèches
+  // ‹ › module précédent/suivant dans l'en-tête) reste sur le même écran
+  // #lesson d'un module à l'autre — le nettoyage de showScreen() (qui ne
+  // se déclenche que si l'ID d'écran change) ne s'applique donc jamais à
+  // ce cas. On coupe ici, au tout début de l'ouverture de n'importe quel
+  // module (y compris le tout premier), par sécurité.
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   // Suivi "module déjà ouvert" (badge 🆕 Nouveau — indépendant des étoiles)
   markThemeOpened(id);
 
@@ -2934,6 +2986,11 @@ function _updateLessonNavArrows() {
    sessionStorage (_saveQuizSession/_restoreQuizSession) continue de gérer
    la reprise après fermeture complète de l'app/l'onglet navigateur. */
 function switchTab(tab) {
+  // Ajouté le 28/08/2026 (demande utilisateur) : changer d'onglet reste sur
+  // le même écran #lesson (showScreen() ne se déclenche pas ici) — sans ce
+  // correctif, la voix ou le micro de l'onglet quitté continuaient à tourner.
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   document.querySelectorAll('#lessonTabs .tab').forEach((b) => {
     b.classList.toggle('active', b.dataset.tab === tab);
   });
@@ -3018,10 +3075,12 @@ function renderFlash() {
   if (isFrench()) {
     // Note (27/08/2026) : l'indice "cliquez pour voir la traduction" a été
     // retiré d'ici — il répétait exactement la consigne déjà donnée dans
-    // le bandeau .section-label juste au-dessus ("… · Haz clic para
-    // volver !"), et n'apparaissait de toute façon jamais sur les cartes
-    // de conjugaison (branche hasConj ci-dessous). Une seule consigne,
-    // valable pour tous les types de carte, suffit.
+    // le bandeau .section-label juste au-dessus, et n'apparaissait de
+    // toute façon jamais sur les cartes de conjugaison (branche hasConj
+    // ci-dessous). Une seule consigne, valable pour tous les types de
+    // carte, suffit. Bandeau reformaté le 28/08/2026 (demande utilisateur) :
+    // action en tête ("Haz clic : …"), sans "para volver" (n'apportait pas
+    // d'information supplémentaire).
     if (hasConj) {
       // Carte conjugaison : affiche le tableau de conjugaison des deux côtés
       frontContent = emFr + '<div class="fc-front-word">' + _buildSpeakableHTML(card.fr, 'fcword') + '</div>'
@@ -3038,10 +3097,9 @@ function renderFlash() {
     const regionLabelsFR = { ES:'🇪🇸 España (Castellano)', MX:'🇲🇽 México', CO:'🇨🇴 Colombia', AR:'🇦🇷 Argentina', PE:'🇵🇪 Perú', VE:'🇻🇪 Venezuela', EC:'🇪🇨 Ecuador' };
     const regionFullLabel = regionLabelsFR[currentRegion] || ('🇪🇸 España (Castellano)');
     document.getElementById('tabContent').innerHTML =
-      '<div class="section-label">Anverso : Francés 🇫🇷 — Reverso : Español '
-      + '<span id="current-lang-flag">' + regionFullLabel + '</span>'
-      + '<span class="fc-region-mascot" aria-hidden="true"> 🐄' + REGION_MASCOTS[currentRegion].symbol + '</span>'
-      + ' · Haz clic para volver !</div>'
+      '<div class="section-label">Haz clic : Anverso Francés 🇫🇷 - '
+      + '<span class="fc-region-mascot" aria-hidden="true">🐄' + REGION_MASCOTS[currentRegion].symbol + '</span>'
+      + ' - Reverso Español <span id="current-lang-flag">' + regionFullLabel + '</span></div>'
       + '<div class="fc-wrap"><div class="fc" id="fc" onclick="flipCard()">'
       + '<div class="fc-front">' + frontContent + '</div>'
       + '<div class="fc-back">'  + backContent  + '</div>'
@@ -3077,10 +3135,10 @@ function renderFlash() {
     const regionLabelsES = { ES:'🇪🇸 Espagne (Castillan)', MX:'🇲🇽 Mexique', CO:'🇨🇴 Colombie', AR:'🇦🇷 Argentine', PE:'🇵🇪 Pérou', VE:'🇻🇪 Venezuela', EC:'🇪🇨 Équateur' };
     const regionFullLabelES = regionLabelsES[currentRegion] || ('🇪🇸 Espagne (Castillan)');
     document.getElementById('tabContent').innerHTML =
-      '<div class="section-label">Recto : Espagnol <span id="current-lang-flag">'
+      '<div class="section-label">Cliquez : Recto Espagnol <span id="current-lang-flag">'
       + regionFullLabelES + '</span>'
-      + '<span class="fc-region-mascot" aria-hidden="true"> 🐄' + REGION_MASCOTS[currentRegion].symbol + '</span>'
-      + ' — Verso : Français 🇫🇷 · Cliquez pour retourner !</div>'
+      + ' - <span class="fc-region-mascot" aria-hidden="true">🐄' + REGION_MASCOTS[currentRegion].symbol + '</span>'
+      + ' - Verso Français 🇫🇷</div>'
       + '<div class="fc-wrap"><div class="fc" id="fc" onclick="flipCard()">'
       + '<div class="fc-front">' + frontContent + '</div>'
       + '<div class="fc-back">'  + backContent  + '</div>'
@@ -3162,6 +3220,9 @@ function pickAlpha(i) {
 
 /* flipCard() — Retourne la carte flash active (toggle de classe CSS 'flipped'). */
 function flipCard() {
+  // Ajouté le 28/08/2026 (demande utilisateur)
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   const fc = document.getElementById('fc');
   if (!fc) return;
   fc.classList.toggle('flipped');
@@ -3557,6 +3618,8 @@ function _resetMicBtn(word, lang, blocked) {
 
 /* nextCard() — Passe à la carte suivante et prononce automatiquement le mot. */
 function nextCard() {
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   fcIdx = (fcIdx + 1) % CT.words.length;
   renderFlash();
   // Prononce le mot dans la langue cible (avec variante régionale si espagnol)
@@ -3573,6 +3636,8 @@ function nextCard() {
 
 /* prevCard() — Revient à la carte précédente. */
 function prevCard() {
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   fcIdx = (fcIdx - 1 + CT.words.length) % CT.words.length;
   renderFlash();
 }
@@ -5176,6 +5241,11 @@ document.addEventListener('DOMContentLoaded', () => {
 ═══════════════════════════════════════════════════════════ */
 
 function showCredits() {
+  // Ajouté le 28/08/2026 (demande utilisateur) : modale ouverte par-dessus
+  // l'écran courant (pas de changement d'ID d'écran), donc jamais couverte
+  // par le nettoyage de showScreen().
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   document.getElementById('credits-modal').style.display = 'flex';
   /* Marque le bouton Infos actif pendant que la modale est ouverte */
   const btnCredits = document.getElementById('navBtnCredits');
@@ -5543,6 +5613,11 @@ function quitGoHome() {
  * indiquer à l'apprenant comment fermer lui-même.
  */
 function quitCloseApp() {
+  // Ajouté le 28/08/2026 (demande utilisateur) : window.close() échoue
+  // souvent (restriction navigateur) — l'utilisateur reste alors sur le
+  // même écran, sans qu'aucun autre correctif ne coupe la voix/le micro.
+  _stopSpeaking();
+  if (typeof _rpClearTimers === 'function') _rpClearTimers();
   document.getElementById('quit-modal').style.display = 'none';
   try { window.close(); } catch (e) { /* ignoré : le repli ci-dessous s'en charge */ }
   setTimeout(() => {
