@@ -133,6 +133,22 @@ body {
    légère ombre portée, centrée verticalement.
    Cela corrige l'effet "îlot étroit sur fond
    blanc" visible à partir de ~ 800 px.
+
+   ⚠️ 29/08/2026 (demande utilisateur, captures d'écran desktop à l'appui) :
+   ce paragraphe annonçait déjà une carte "centrée verticalement", mais le
+   code utilisait align-items:flex-start (alignée en HAUT) — incohérence
+   entre l'intention documentée et le code. Sur un écran à contenu court
+   (ex. Flashcards, peu de texte), .app était en plus forcée à min-height:
+   100vh, ce qui créait un grand vide interne d'une couleur très pâle
+   (--c-bg, quasi blanche) entre le pied de page et le bas de la carte —
+   visuellement indiscernable d'un bug/écran cassé. Corrigé ci-dessous :
+   align-items:center + suppression du min-height forcé, pour que chaque
+   écran prenne sa hauteur naturelle et se centre dans le viewport. Le
+   fond quadrillé de la page reste alors visible au-dessus ET en dessous
+   de la carte sur les écrans courts, ce qui se lit clairement comme un
+   choix de mise en page plutôt qu'un vide anormal. Aucun effet sur les
+   écrans à contenu long (ex. Modules, 53 modules) : leur hauteur
+   naturelle dépasse déjà 100vh, donc rien ne change pour eux.
 ════════════════════════════════════════ */
 @media (min-width: 768px) {
   body {
@@ -142,26 +158,32 @@ body {
       radial-gradient(circle, rgba(0,35,149,.08) 1px, transparent 1px);
     background-size: 28px 28px;
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* flex-start → center le 29/08/2026, cf. note ci-dessus */
     justify-content: center;
     min-height: 100vh;
     padding: 0;
   }
 
   .app {
-    /* La colonne .app devient une carte flottante */
+    /* La colonne .app devient une carte flottante, à sa hauteur naturelle
+       (min-height:100vh retiré le 29/08/2026, cf. note ci-dessus) */
     box-shadow:
       0 0 0 1px rgba(0,0,0,.06),
       0 8px 32px rgba(0,0,0,.14),
       0 2px 8px  rgba(0,0,0,.08);
-    min-height: 100vh;
     position: relative;
   }
 
-  /* Le lanceur et chaque écran occupent toute la hauteur de la carte */
-  #app-launcher,
+  /* Chaque écran retrouve lui aussi sa hauteur naturelle (min-height:100vh
+     retiré le 29/08/2026, cf. note ci-dessus — remplace l'ancienne règle
+     qui les forçait à occuper toute la hauteur de la carte). #app-launcher
+     n'est pas concerné : sa propre règle plus bas dans ce fichier
+     (#app-launcher { min-height: 100vh }, plus spécifique par id) l'emporte
+     de toute façon sur tous les viewports ; son layout interne en
+     justify-content:space-between est conçu pour occuper toute la hauteur
+     et reste inchangé ici. */
   .screen.active {
-    min-height: 100vh;
+    min-height: auto;
   }
 }
 
