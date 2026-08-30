@@ -1583,13 +1583,40 @@
   <div id="lesson" class="screen">
 
     <div class="lesson-header">
-      <button class="back-btn" onclick="lessonGoBack()" id="lessonBackBtn"
-              aria-label="Retour aux modules / Volver a los módulos">←</button>
+      <!-- Groupe de navigation rapide (Accueil / Guide / Modules) — remplace
+           le 30/08/2026 (demande utilisateur, même agencement que l'appli
+           Oromo ↔ Français) l'ancien bouton "← Módulos/Modules" à flèche +
+           texte bilingue sur 2 lignes, qui ne menait qu'aux Modules.
+           Réutilise .back-btn/.back-icon-btn, déjà utilisés à l'identique
+           sur l'écran Modules (cf. .sections-back-group plus haut dans
+           index.html) plutôt qu'une nouvelle classe, pour un style cohérent
+           avec le reste de l'appli. lessonGoBack() (bouton Modules) est le
+           même déclencheur qu'avant : seul l'habillage change, pas la
+           destination. Aucun texte bilingue à gérer ici (icônes seules),
+           donc plus besoin de lessonBackBtn dans _setUI() (cf. app.js). -->
+      <div class="sections-back-group lesson-back-group" role="group" aria-label="Navigation rapide">
+        <button class="back-btn back-icon-btn" onclick="navBackToHome()"
+                aria-label="Retour à l'accueil / Volver al inicio" title="Accueil / Inicio">
+          <span aria-hidden="true">🏠</span>
+        </button>
+        <button class="back-btn back-icon-btn" onclick="navBackToGuide()"
+                aria-label="Retour au guide explicatif / Volver a la guía" title="Guide / Guía">
+          <span aria-hidden="true">❓</span>
+        </button>
+        <button class="back-btn back-icon-btn" onclick="lessonGoBack()"
+                aria-label="Retour aux modules / Volver a los módulos" title="Modules / Módulos">
+          <span aria-hidden="true">📚</span>
+        </button>
+      </div>
 
       <!-- Ex-bouton 🏠 "Accueil" — corrigé le 19/07/2026 (demande utilisateur) :
            ce bouton appelait déjà lessonGoBack(), exactement comme ← à sa
            gauche : un doublon pur qui n'apportait rien. Remplacé par le
-           bouton Quitter, commun aux 5 écrans de l'app (cf. #quit-modal). -->
+           bouton Quitter, commun aux 5 écrans de l'app (cf. #quit-modal).
+           Le 🏠 réapparu le 30/08/2026 dans le groupe juste au-dessus n'est
+           PAS un retour en arrière sur ce correctif : il appelle désormais
+           navBackToHome() (vrai écran d'accueil), pas lessonGoBack() —
+           donc plus de doublon avec 🚪 Quitter, qui reste ici inchangé. -->
       <button class="back-btn lesson-quit-btn quit-btn" onclick="showQuitConfirm()" id="lessonQuitBtn"
               title="Quitter / Salir" aria-label="Quitter l'application / Salir de la aplicación">🚪</button>
 

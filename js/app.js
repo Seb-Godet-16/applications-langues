@@ -794,7 +794,6 @@ function initApp(mode) {
       homeStartBtn   : '▶ Commencer<br><span class="translation-sub">Empezar</span>',
       sectionsTitle  : '📚 Modules',
       sectionsFlag   : '🇫🇷',
-      lessonBackBtn  : '← Modules<br><span class="translation-sub">Módulos</span>',
       level1Badge    : '1',
       level1Label    : '<span>Niveau 1 — Vocabulaire<br><span class="level-tab-sub">Nivel 1 — Vocabulario</span></span>',
       level2Badge    : '2',
@@ -816,7 +815,6 @@ function initApp(mode) {
       homeStartBtn   : '▶ Empezar<br><span class="translation-sub">Commencer</span>',
       sectionsTitle  : '📚 Módulos',
       sectionsFlag   : activeFlag,           // Drapeau de la variante régionale apprise
-      lessonBackBtn  : '← Módulos<br><span class="translation-sub">Modules</span>',
       level1Badge    : '1',
       level1Label    : '<span>Nivel 1 — Vocabulario<br><span class="level-tab-sub">Niveau 1 — Vocabulaire</span></span>',
       level2Badge    : '2',
@@ -874,12 +872,16 @@ function initApp(mode) {
 ───────────────────────────────────────────────────────── */
 function _setUI(t) {
   /* homeFlagRow et homeBackBtn n'existent plus dans le nouveau #home style Oromo —
-     les drapeaux et le titre sont gérés par _buildHomeGuide(). */
+     les drapeaux et le titre sont gérés par _buildHomeGuide(). lessonBackBtn
+     retiré le 30/08/2026 (demande utilisateur) : l'ancien bouton "← Módulos/
+     Modules" à texte bilingue est remplacé dans index.html par un groupe de
+     3 icônes fixes (🏠 Accueil / ❓ Guide / 📚 Modules, cf. .lesson-back-group
+     dans style.css), qui n'ont pas besoin de traduction — plus rien à
+     injecter ici pour cet élément. */
   _setText('sectionsTitle',   t.sectionsTitle);
   _setText('sectionsTitle2',  t.sectionsTitle);     // Écran sections-level2
   _setText('sectionsFlag',    t.sectionsFlag);
   _setText('sectionsFlag2',   t.sectionsFlag);      // Écran sections-level2
-  _setText('lessonBackBtn',   t.lessonBackBtn);
   _setText('level1Badge',     t.level1Badge);
   _setText('level1Label',     t.level1Label);
   _setText('level1LabelB',    t.level1Label);       // Onglet sur sections-level2

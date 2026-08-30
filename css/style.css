@@ -1945,9 +1945,13 @@ body {
   gap: 3px;
 }
 
-/* Groupe des 2 icônes de retour (🏠 Accueil / ❓ Guide) remplaçant
-   l'ancienne flèche unique "← Retour" — chacune navigue vers une
-   destination différente, au choix de l'apprenant. */
+/* Groupe de 2 ou 3 icônes de retour (🏠 Accueil / ❓ Guide / 📚 Modules
+   selon l'écran) remplaçant une flèche unique "← Retour" — chacune navigue
+   vers une destination différente, au choix de l'apprenant. À l'origine
+   (2 icônes, écran Modules). Réutilisée telle quelle le 30/08/2026 pour le
+   groupe à 3 icônes du header de leçon (cf. .lesson-header .sections-back-group
+   plus bas dans ce fichier pour l'ajustement d'espacement propre à cet
+   emplacement, plus resserré). */
 .sections-back-group {
   display: flex;
   gap: 6px;
@@ -2505,8 +2509,10 @@ body {
 }
 
 /* Bug 9.6 — Éléments à taille fixe du header de leçon : ne doivent jamais
-   être écrasés ni passer à la ligne, quelle que soit la longueur du titre. */
-#lessonBackBtn,
+   être écrasés ni passer à la ligne, quelle que soit la longueur du titre.
+   #lessonBackBtn retiré de cette liste le 30/08/2026 (id supprimé d'index.html,
+   remplacé par .lesson-back-group ci-dessous). */
+.lesson-back-group,
 .lesson-quit-btn,
 #lessonEmoji,
 .lesson-nav-arrows {
@@ -2569,16 +2575,28 @@ body {
   padding: 3px 6px;
 }
 
-/* Correctif alignement : le bouton retour peut contenir deux lignes
-   (ex : "← Retour\nVolver"), on les centre proprement */
-#lessonBackBtn {
-  display: inline-flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1.1 !important;
-  height: auto !important;
-  min-height: 44px; /* zone de tap minimale recommandée */
+/* Groupe de navigation rapide (🏠/❓/📚) ajouté le 30/08/2026 dans le header
+   de leçon, à la place de l'ancien bouton "← Módulos/Modules" — ce dernier
+   pouvait contenir 2 lignes de texte bilingue (d'où la règle de centrage
+   qui occupait cet emplacement jusqu'ici) ; les icônes seules n'en ont
+   plus besoin, la règle a donc été retirée plutôt qu'adaptée.
+   Icônes réduites ici uniquement (comme .sections-top-icons-row .back-icon-btn
+   pour l'écran Modules, même principe) : le header de leçon est déjà plus
+   compact (cf. .lesson-header réduit le 27/08/2026) et doit aussi laisser
+   la place au bouton 🚪 Quitter, à l'emoji de module et au titre. Placée
+   APRÈS .lesson-header .back-btn ci-dessus pour gagner le conflit de
+   spécificité égale sur font-size (les 2 sélecteurs ont 2 classes
+   chaînées) : en CSS, à spécificité égale, la dernière règle du fichier
+   l'emporte — sans ce positionnement, .lesson-header .back-btn imposerait
+   son .9rem à la place du 1.05rem voulu ici pour des icônes. */
+.lesson-header .back-icon-btn {
+  font-size: 1.05rem !important;
+  min-width: 30px;
+  min-height: 30px;
+}
+.lesson-header .sections-back-group {
+  gap: 4px;
+  margin-bottom: 0;
 }
 
 /* Bouton retour transparent sur l'écran home (positionné en haut-gauche) */
