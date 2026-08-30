@@ -928,6 +928,7 @@
             <p>Merci également à mes <strong>parents</strong> pour leur travail de relecture, leurs corrections sur les traductions et leurs conseils sur l'ergonomie de l'application.</p>
             <p>Merci à <strong>Christophe Elin</strong> pour ses retours précis et multiples d'expérience utilisateur.</p>
             <p>Merci à <strong>Sandrine Le Goff</strong> pour son retour utilisateur important, avec des idées d'amélioration sur le plan visuel, apporté avec son œil d'experte du digital.</p>
+            <p>Merci à <strong>Mussa Sembro</strong> pour ses remarques sur l'application sœur Taphad'Meuh (Oromo) : il trouvait l'interface trop chargée pour de grands débutants — un constat qui a mené à une meilleure organisation des rubriques et des flashcards, appliquée ici aussi.</p>
           </div>
         </details>
 
@@ -1374,6 +1375,7 @@
             <p>Gracias también a mis <strong>padres</strong> por su trabajo de corrección, sus ajustes en las traducciones y sus consejos sobre la ergonomía de la aplicación.</p>
             <p>Gracias a <strong>Christophe Elin</strong> por sus comentarios precisos y numerosos sobre la experiencia de usuario.</p>
             <p>Gracias a <strong>Sandrine Le Goff</strong> por su importante retorno como usuaria, con ideas de mejora a nivel visual aportadas con su mirada experta del ámbito digital.</p>
+            <p>Gracias a <strong>Mussa Sembro</strong> por sus comentarios sobre la aplicación hermana Taphad'Meuh (Oromo): consideraba que la interfaz era demasiado recargada para principiantes totales — una observación que llevó a una mejor organización de las secciones y las tarjetas, aplicada también aquí.</p>
           </div>
         </details>
 
@@ -1660,40 +1662,100 @@
                 box-shadow:0 4px 15px rgba(0,0,0,0.2);">
       <h3 style="margin:0 25px 4px;color:#333;">ℹ️ Infos</h3>
 
-      <!-- Rubrique 1 : Qui suis-je -->
-      <details class="hg-section" style="text-align:left;">
-        <summary class="hg-summary">
-          <span class="hg-icon">👤</span>
-          <span class="hg-label">Qui suis-je ?</span>
-          <span class="hg-chevron">▼</span>
-        </summary>
-        <div class="hg-detail">
-          <p>🗺️ <strong>Sébastien Godet</strong>, 38 ans. Derrière ce nom, il y a un géographe de formation, un entraîneur d'athlétisme et surtout un passionné par l'art de tisser des liens. Originaire de l'ouest de la France, c'est à Paris, dans les années 2010, que mon histoire avec le monde hispanophone a commencé : j'y ai fait la rencontre d'amis formidables parmi mes voisins et au sein de mon club d'athlétisme.</p>
-          <p>✈️ Leur contact, combiné à ma curiosité de géographe pour la nature grandiose et variée de leurs pays d'origine, m'a poussé à sauter le pas en 2022 : un voyage de 7 mois à travers l'Équateur, l'Argentine et l'Uruguay.</p>
-          <p>💡 Sur place, les rencontres et les amitiés se sont multipliées, créant une envie profonde de garder ce lien bilingue une fois rentré. Mais c'est en juin 2026, avec la découverte de Claude Artifacts, que le véritable déclic a eu lieu : cette opportunité de développer mes compétences en développement web grâce à l'IA m'a donné les clés pour donner vie à mon projet.</p>
-          <p>🐄 C'est ainsi qu'est né <strong>VACHÉBO</strong>. Ce projet fait coup double : il concrétise mon apprentissage technique tout en créant l'outil qui manquait cruellement sur le marché — un site pensé pour les grands débutants, respectant les vraies variantes régionales de l'espagnol.</p>
-          <p>
-            💼 <a href="https://www.linkedin.com/in/s%C3%A9bastien-godet-142ba6145" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">LinkedIn</a>
-            &nbsp;·&nbsp;
-            ✉️ <button onclick="openAndCopyEmail()" style="background:none;border:none;padding:0;color:#007bff;font-weight:bold;font-size:inherit;font-family:inherit;cursor:pointer;text-decoration:none;">Email</button>
-          </p>
-        </div>
-      </details>
+      <!-- 30/08/2026 (demande utilisateur) : modale scindée en 2 blocs de
+           langue (.home-lang-block[data-lang]), sur le même principe que
+           #guideContentFR/#guideContentES du Guide (§17 dans app.js). Bascule
+           automatique par _buildHomeGuide(), déjà appelée à chaque changement
+           de mode (via _setUI()) et à chaque ouverture du Guide — aucun code
+           JS supplémentaire nécessaire ici, _buildHomeGuide() cible TOUS les
+           .home-lang-block du document, pas seulement ceux du Guide. Le
+           titre "ℹ️ Infos" et le bouton "Fermer" restent partagés, non
+           traduits : c'est aussi le choix fait sur l'appli sœur Oromo
+           (référence de ce correctif), pas une omission. Avant ce
+           correctif, cette modale était unique et toujours en français,
+           quel que soit le mode. -->
 
-      <!-- Rubrique 2 : Remerciements -->
-      <details class="hg-section" style="text-align:left;">
-        <summary class="hg-summary">
-          <span class="hg-icon">🙏</span>
-          <span class="hg-label">Remerciements</span>
-          <span class="hg-chevron">▼</span>
-        </summary>
-        <div class="hg-detail">
-          <p>🧑‍💻 <strong>Fédérico Calo</strong> (<a href="https://www.linkedin.com/in/federicocalo/" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">Architecte Développeur Web</a>) — aide technique précieuse tout au long du projet</p>
-          <p>👨‍👩‍👧 <strong>Mes parents</strong> — relecture, corrections des traductions et conseils ergonomiques</p>
-          <p>🗣️ <strong>Christophe Elin</strong> — retours précis et multiples d'expérience utilisateur</p>
-          <p>🎨 <strong>Sandrine Le Goff</strong> — retours visuels avisés, forte de son expérience du digital</p>
-        </div>
-      </details>
+      <!-- BLOC FR — Infos en Français -->
+      <div class="home-lang-block home-lang-hidden" data-lang="fr">
+
+        <!-- Rubrique 1 : Qui suis-je -->
+        <details class="hg-section" style="text-align:left;">
+          <summary class="hg-summary">
+            <span class="hg-icon">👤</span>
+            <span class="hg-label">Qui suis-je ?</span>
+            <span class="hg-chevron">▼</span>
+          </summary>
+          <div class="hg-detail">
+            <p>🗺️ <strong>Sébastien Godet</strong>, 38 ans. Derrière ce nom, il y a un géographe de formation, un entraîneur d'athlétisme et surtout un passionné par l'art de tisser des liens. Originaire de l'ouest de la France, c'est à Paris, dans les années 2010, que mon histoire avec le monde hispanophone a commencé : j'y ai fait la rencontre d'amis formidables parmi mes voisins et au sein de mon club d'athlétisme.</p>
+            <p>✈️ Leur contact, combiné à ma curiosité de géographe pour la nature grandiose et variée de leurs pays d'origine, m'a poussé à sauter le pas en 2022 : un voyage de 7 mois à travers l'Équateur, l'Argentine et l'Uruguay.</p>
+            <p>💡 Sur place, les rencontres et les amitiés se sont multipliées, créant une envie profonde de garder ce lien bilingue une fois rentré. Mais c'est en juin 2026, avec la découverte de Claude Artifacts, que le véritable déclic a eu lieu : cette opportunité de développer mes compétences en développement web grâce à l'IA m'a donné les clés pour donner vie à mon projet.</p>
+            <p>🐄 C'est ainsi qu'est né <strong>VACHÉBO</strong>. Ce projet fait coup double : il concrétise mon apprentissage technique tout en créant l'outil qui manquait cruellement sur le marché — un site pensé pour les grands débutants, respectant les vraies variantes régionales de l'espagnol.</p>
+            <p>
+              💼 <a href="https://www.linkedin.com/in/s%C3%A9bastien-godet-142ba6145" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">LinkedIn</a>
+              &nbsp;·&nbsp;
+              ✉️ <button onclick="openAndCopyEmail()" style="background:none;border:none;padding:0;color:#007bff;font-weight:bold;font-size:inherit;font-family:inherit;cursor:pointer;text-decoration:none;">Email</button>
+            </p>
+          </div>
+        </details>
+
+        <!-- Rubrique 2 : Remerciements -->
+        <details class="hg-section" style="text-align:left;">
+          <summary class="hg-summary">
+            <span class="hg-icon">🙏</span>
+            <span class="hg-label">Remerciements</span>
+            <span class="hg-chevron">▼</span>
+          </summary>
+          <div class="hg-detail">
+            <p>🧑‍💻 <strong>Fédérico Calo</strong> (<a href="https://www.linkedin.com/in/federicocalo/" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">Architecte Développeur Web</a>) — aide technique précieuse tout au long du projet</p>
+            <p>👨‍👩‍👧 <strong>Mes parents</strong> — relecture, corrections des traductions et conseils ergonomiques</p>
+            <p>🗣️ <strong>Christophe Elin</strong> — retours précis et multiples d'expérience utilisateur</p>
+            <p>🎨 <strong>Sandrine Le Goff</strong> — retours visuels avisés, forte de son expérience du digital</p>
+            <p>🔀 <strong>Mussa Sembro</strong> — ses retours sur Taphad'Meuh (l'appli sœur en Oromo), pointant une interface trop chargée pour les grands débutants, ont aussi inspiré les rubriques et flashcards de cette application</p>
+          </div>
+        </details>
+
+      </div><!-- /.home-lang-block[data-lang="fr"] -->
+
+      <!-- BLOC ES — Infos en Español -->
+      <div class="home-lang-block home-lang-hidden" data-lang="es">
+
+        <!-- Rubrique 1 : ¿Quién soy? -->
+        <details class="hg-section" style="text-align:left;">
+          <summary class="hg-summary">
+            <span class="hg-icon">👤</span>
+            <span class="hg-label">¿Quién soy?</span>
+            <span class="hg-chevron">▼</span>
+          </summary>
+          <div class="hg-detail">
+            <p>🗺️ <strong>Sébastien Godet</strong>, 38 años. Detrás de este nombre hay un geógrafo de formación, un entrenador de atletismo y, sobre todo, un apasionado por el arte de tejer vínculos. Originario del oeste de Francia, mi historia con el mundo hispanohablante comenzó en París, en la década de 2010: allí conocí a amigos estupendos, tanto entre mis vecinos como en mi club de atletismo.</p>
+            <p>✈️ Ese contacto, sumado a mi curiosidad de geógrafo por la naturaleza tan grandiosa y variada de sus países de origen, me impulsó a dar el paso en 2022: un viaje de 7 meses por Ecuador, Argentina y Uruguay.</p>
+            <p>💡 Allí, los encuentros y las amistades se multiplicaron, y surgió un deseo profundo de mantener ese vínculo bilingüe al volver. Pero fue en junio de 2026, con el descubrimiento de Claude Artifacts, cuando llegó el verdadero clic: esta oportunidad de desarrollar mis habilidades en desarrollo web gracias a la IA me dio las claves para dar vida a mi proyecto.</p>
+            <p>🐄 Así nació <strong>VACHÉBO</strong>. Este proyecto cumple una doble función: concreta mi aprendizaje técnico y, a la vez, crea la herramienta que realmente faltaba en el mercado — un sitio pensado para principiantes totales, que respeta las verdaderas variantes regionales del español.</p>
+            <p>
+              💼 <a href="https://www.linkedin.com/in/s%C3%A9bastien-godet-142ba6145" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">LinkedIn</a>
+              &nbsp;·&nbsp;
+              ✉️ <button onclick="openAndCopyEmail()" style="background:none;border:none;padding:0;color:#007bff;font-weight:bold;font-size:inherit;font-family:inherit;cursor:pointer;text-decoration:none;">Email</button>
+            </p>
+          </div>
+        </details>
+
+        <!-- Rubrique 2 : Agradecimientos -->
+        <details class="hg-section" style="text-align:left;">
+          <summary class="hg-summary">
+            <span class="hg-icon">🙏</span>
+            <span class="hg-label">Agradecimientos</span>
+            <span class="hg-chevron">▼</span>
+          </summary>
+          <div class="hg-detail">
+            <p>🧑‍💻 <strong>Fédérico Calo</strong> (<a href="https://www.linkedin.com/in/federicocalo/" target="_blank" rel="noopener noreferrer" style="color:#007bff;text-decoration:none;font-weight:bold;">Arquitecto Desarrollador Web</a>) — valiosa ayuda técnica a lo largo del proyecto</p>
+            <p>👨‍👩‍👧 <strong>Mis padres</strong> — corrección, ajustes en las traducciones y consejos de ergonomía</p>
+            <p>🗣️ <strong>Christophe Elin</strong> — comentarios precisos y numerosos sobre la experiencia de usuario</p>
+            <p>🎨 <strong>Sandrine Le Goff</strong> — comentarios visuales acertados, aportados con su mirada experta del ámbito digital</p>
+            <p>🔀 <strong>Mussa Sembro</strong> — sus comentarios sobre Taphad'Meuh (la app hermana en Oromo), señalando una interfaz demasiado cargada para principiantes totales, también inspiraron las secciones y tarjetas de esta aplicación</p>
+          </div>
+        </details>
+
+      </div><!-- /.home-lang-block[data-lang="es"] -->
 
       <button onclick="document.getElementById('credits-modal').style.display='none'; const b=document.getElementById('navBtnCredits'); if(b)b.classList.remove('active'); const cur=document.querySelector('.screen.active'); _updateBottomNav(cur?cur.id:'app-launcher');"
               style="margin:18px 25px 0;padding:10px 25px;border-radius:8px;border:none;
