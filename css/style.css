@@ -23,65 +23,74 @@
  * ║  Tous les composants utilisent var(--c-*) ; il suffit de       ║
  * ║  changer la classe sur <html> pour basculer le rendu visuel.   ║
  * ╠══════════════════════════════════════════════════════════════════╣
- * ║  PLAN DU FICHIER (numéros recalculés le 19/07/2026, mesure directe —  ║
- * ║  chaque ancre revérifiée une à une par grep après l'ajout du bloc     ║
- * ║  "Essentiel" + sous-accordéon "Détail complet" dans les rubriques du  ║
- * ║  Guide (.hg-essential / .hg-sub, 19/07/2026, demande utilisateur).    ║
- * ║  Liste dans l'ordre réel du fichier.)                                ║
- * ║   §1   Reset & base                              ligne 80            ║
- * ║   §1b  Transitions de navigation                 ligne 196           ║
- * ║   §5   Écran 0 — Lanceur  #app-launcher          ligne 278           ║
- * ║         Pastille "✅ terminés" du header (ajout   ligne 431           ║
+ * ║  PLAN DU FICHIER (intégralement recalculé le 30/08/2026, demande      ║
+ * ║  utilisateur explicite de remise à niveau des numéros de ligne et     ║
+ * ║  commentaires — chaque ancre revérifiée une à une par grep après      ║
+ * ║  coup, jamais déduite par un calcul de décalage. Ce recalcul couvre   ║
+ * ║  la dérive accumulée depuis le dernier recalcul complet du            ║
+ * ║  19/07/2026 (~1 550 lignes de croissance nette depuis, correctifs     ║
+ * ║  des 20-22/07, 26-30/08 inclus). Au passage, 2 sections déjà          ║
+ * ║  présentes mais absentes de ce plan ont été repérées et ajoutées      ║
+ * ║  ci-dessous (AJOUT — bouton copier e-mail, ligne 4453 ; AMÉLIORATION  ║
+ * ║  — optimisation du mode paysage, ligne 5515) : ni l'une ni l'autre    ║
+ * ║  n'était non plus reprise dans HISTORIQUE (README.md/                 ║
+ * ║  Bilan_technique.md). Liste dans l'ordre réel du fichier.)            ║
+ * ║   §1   Reset & base                              ligne   98          ║
+ * ║   §1b  Transitions de navigation                 ligne  237          ║
+ * ║   §5   Écran 0 — Lanceur  #app-launcher          ligne  318          ║
+ * ║         Pastille "✅ terminés" du header (ajout   ligne  862          ║
  * ║           12/07/2026) — .stars-pill/.completed-pill                  ║
- * ║   §2   Variables de thème (:root / fallback)     ligne 463           ║
- * ║   §6   Écran 1 — Accueil  #home (style Oromo)    ligne 523           ║
- * ║         Bouton "Installer l'app" (.home-install-btn, ligne 650       ║
+ * ║   §2   Variables de thème (:root / fallback)     ligne  905          ║
+ * ║   §6   Écran 1 — Accueil  #home (style Oromo)    ligne  977          ║
+ * ║         Bouton "Installer l'app" (.home-install-btn, ligne 1166      ║
  * ║           ajout 12/07/2026)                                          ║
- * ║         Carte "En bref" (.hg-tldr, ajout 11/07)    ligne 874          ║
- * ║         Widget variante régionale                 ligne 1164          ║
- * ║         Bloc "Essentiel" + sous-accordéon "Détail   ligne 1240         ║
+ * ║         Carte "En bref" (.hg-tldr, ajout 11/07)    ligne 1402         ║
+ * ║         Bloc "Essentiel" + sous-accordéon "Détail   ligne 1530         ║
  * ║           complet" des rubriques (.hg-essential /                    ║
  * ║           .hg-sub, ajout 19/07/2026)                                 ║
- * ║   §7   Écran 2 — Sections  #sections             ligne 1339           ║
- * ║         États de carte + badge Nouveau (ajout     ligne 1495           ║
+ * ║         Widget variante régionale                 ligne 1799          ║
+ * ║   §7   Écran 2 — Sections  #sections             ligne 1904           ║
+ * ║         États de carte + badge Nouveau (ajout     ligne  924           ║
  * ║           12/07/2026) — .state-progress/-complete, .badge-new,       ║
  * ║           .star-filled/-empty                                        ║
- * ║         §27 Onglets Niveau 1 / 2                 ligne 1545           ║
- * ║         §LAUNCHER-REGION-GRID                    ligne 1625           ║
- * ║         §28 Écrans sections level : layout       ligne 1712           ║
- * ║   §8   Écran 3 — Leçon  #lesson                  ligne 1737           ║
- * ║         Onglets (tabs)                           ligne 1865           ║
- * ║   §9   Composants : Flashcards                   ligne 1902           ║
- * ║         Bannière hors-ligne (ajout 10/07/2026)   ligne 1998           ║
- * ║         Barre meta (badge voix + vitesse)        ligne 2031           ║
- * ║   §10  Composants : Alphabet                     ligne 2294           ║
- * ║   §11  Composants : Quiz                         ligne 2356           ║
- * ║   §12  Composants : Dialogues / Situations       ligne 2436           ║
- * ║   §13  Composants : Vocabulaire                  ligne 2505           ║
- * ║   §17  Footer commun                             ligne 2595           ║
- * ║   §16  Modales (Guide utilisateur + Remerciements) ligne 2627        ║
- * ║   §3   Thème Français (html.theme-french)        ligne 3353           ║
- * ║   §4   Thème Espagnol (html.theme-spain)         ligne 3371           ║
- * ║   §15  Variantes régionales hispaniques          ligne 3404           ║
- * ║   §14  Onglet Répète                             ligne 3479           ║
- * ║         Focus clavier (role="button")            ligne 3601           ║
- * ║         Toast — notification discrète            ligne 3615           ║
- * ║   §24b Mode sombre @media dark                   ligne 3863           ║
- * ║   §26  Barre de navigation basse                 ligne 4157           ║
- * ║   §PDF  Boutons export PDF                       ligne 4371           ║
- * ║   §SPK  Feedback visuel TTS (.is-speaking)       ligne 4416           ║
- * ║         Ajouts Juin 2026                         ligne 4464           ║
- * ║   §27-bis (ajout 08/07) Leçon 2 colonnes desktop ligne 4660           ║
- * ║         (numéro "27" déjà pris plus haut ; collision préexistante)   ║
+ * ║         §27 Onglets Niveau 1 / 2                 ligne 2279           ║
+ * ║         §LAUNCHER-REGION-GRID                    ligne 2358           ║
+ * ║         §28 Écrans sections level : layout       ligne 2455           ║
+ * ║   §8   Écran 3 — Leçon  #lesson                  ligne 2479           ║
+ * ║         Onglets (tabs)                           ligne 2631           ║
+ * ║   §9   Composants : Flashcards                   ligne 2684           ║
+ * ║         Bannière hors-ligne (ajout 10/07/2026)   ligne 2790           ║
+ * ║         Barre meta (badge voix + vitesse)        ligne 2823           ║
+ * ║   §10  Composants : Alphabet                     ligne 3132           ║
+ * ║   §11  Composants : Quiz                         ligne 3194           ║
+ * ║   §12  Composants : Dialogues / Situations       ligne 3285           ║
+ * ║   §13  Composants : Vocabulaire                  ligne 3354           ║
+ * ║   §17  Footer commun                             ligne 3462           ║
+ * ║   §16  Modales (Guide utilisateur + Remerciements) ligne 3499        ║
+ * ║   §3   Thème Français (html.theme-french)        ligne 4236           ║
+ * ║   §4   Thème Espagnol (html.theme-spain)         ligne 4254           ║
+ * ║   §15  Variantes régionales hispaniques          ligne 4286           ║
+ * ║   §14  Onglet Répète                             ligne 4361           ║
+ * ║         AJOUT — Bouton copier e-mail (sécurisé,  ligne 4453           ║
+ * ║           non repris dans HISTORIQUE jusqu'ici, cf. note ci-dessus)  ║
+ * ║         Focus clavier (role="button")            ligne 4483           ║
+ * ║         Toast — notification discrète            ligne 4497           ║
+ * ║   §24b Mode sombre @media dark                   ligne 4787           ║
+ * ║   §26  Barre de navigation basse                 ligne 5087           ║
+ * ║   §PDF  Boutons export PDF                       ligne 5300           ║
+ * ║   §SPK  Feedback visuel TTS (.is-speaking)       ligne 5345           ║
+ * ║         Ajouts Juin 2026                         ligne 5393           ║
+ * ║   AMÉLIORATION — Optimisation mode paysage       ligne 5515           ║
+ * ║           (téléphones, non reprise dans HISTORIQUE jusqu'ici,        ║
+ * ║           cf. note ci-dessus)                                        ║
+ * ║   §27-bis (ajout 08/07) Leçon 2 colonnes desktop ligne 5625           ║
+ * ║         (numéro "27" déjà pris plus haut ; collision préexistante,   ║
+ * ║          y compris dans le libellé du code lui-même)                 ║
  * ╠══════════════════════════════════════════════════════════════════╣
- * ║  ⚠️ NON RECALCULÉ depuis le 19/07/2026 : le fichier a grossi de     ║
- * ║  ~965 lignes depuis (179 décl./51 var. CSS toujours exactes, mais  ║
- * ║  les numéros de ligne ci-dessus ne le sont plus — ex. §16 Modales  ║
- * ║  réellement bien après la ligne 2627 indiquée). Les correctifs du  ║
- * ║  28/08/2026 (.section-label, .mic-feedback, cf. commentaires datés ║
- * ║  dans le corps du fichier) ajoutent à ce décalage préexistant sans ║
- * ║  le corriger — recalcul complet hors périmètre de cette demande,  ║
- * ║  cf. note équivalente en tête d'app.js.                            ║
+ * ║  Compteurs inchangés : 51 variables CSS / 179 déclarations,          ║
+ * ║  recomptés par grep avant/après ce recalcul (aucune variable         ║
+ * ║  ajoutée ou retirée) — voir aussi la note équivalente en tête        ║
+ * ║  d'app.js.                                                            ║
  * ╚══════════════════════════════════════════════════════════════════╝
  */
 
@@ -586,7 +595,7 @@ body {
   50%      { transform: translateX(4px); }
 }
 /* Accessibilité : reduced-motion — cf. autres animations du fichier
-   (ex. .slide-in-right L.264, .is-speaking L.4441) */
+   (ex. .slide-in-right L.270, .is-speaking L.5353) */
 @media (prefers-reduced-motion: reduce) {
   .lang-card-cta-arrow { animation: none; }
 }
