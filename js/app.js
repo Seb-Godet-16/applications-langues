@@ -12,160 +12,85 @@
    avec les attributs onclick="" générés dynamiquement).
    ============================================================
    HISTORIQUE DE L'APPLICATION :
-     07/06/2026 → 29/06/2026  Version bêta créée avec IA Claude Sonnet 4.6
-                               et Gemini 3.5 Flash.
-     29/06/2026 → 08/07/2026  Tests :
-                                 - Desktop (auto) et iPhone (manuel) par
-                                   Fédérico
-                                 - Android (manuel) par Sébastien Godet
-                                   (aidé par Gemini 3.5 Flash Extended)
-                               Correctifs par Sébastien Godet (aidé par
-                               Claude Sonnet 5).
-     08/07/2026 → 12/07/2026  Expériences utilisateurs (Christophe
-                               Elin, Maman, Moi) et correctifs avec
-                               Claude Sonnet 5.
-     18/07/2026 → 23/07/2026  Expériences utilisatrice (Sandrine,
-                               Moi) et correctifs avec Claude Sonnet 5.
-     26/08/2026 (suite)       Regroupement du Niveau 1 (37 thèmes) en
-                               5 catégories repliables + carte
-                               "Continuer" (ergonomie, demande
-                               utilisateur) avec Claude Sonnet 5.
-     27/08/2026               Correctif d'affichage (capture d'écran à
-                               l'appui, demande utilisateur) : #grid1/
-                               #grid2 passés en colonne unique pleine
-                               largeur (au lieu de la grille 2 colonnes
-                               héritée par erreur de .themes-grid), et
-                               une seule catégorie ouverte par défaut
-                               au lieu de deux — avec Claude Sonnet 5.
-     27/08/2026 (suite)       Extension (demande utilisateur, "pour
-                               aider l'apprenant") du même principe de
-                               catégories repliables au Niveau 2 : les
-                               16 dialogues regroupés en 4 rubriques
-                               (LEVEL2_CATEGORIES) avec Claude Sonnet 5.
-     28/08/2026               Trois correctifs visuels sur les flashcards
-                               (captures d'écran à l'appui, demande
-                               utilisateur) : (1) bandeau .section-label
-                               ("Cliquez : Recto/Verso...") tient sur une
-                               seule ligne dans le cas courant — retrait
-                               de l'uppercase/letter-spacing (responsable
-                               du passage à 2 lignes) + légère baisse de
-                               taille (.7rem → .65rem), tout en gardant le
-                               repli sur 2 lignes pour les noms de région
-                               trop longs (ex. "Espagne (Castillan)") ;
-                               (2) espace vide réduit sous les boutons
-                               audio/micro (.mic-feedback : 28px → 14px) ;
-                               (3) exemple bilingue entre parenthèses des
-                               définitions verbes (nouvelle fonction
-                               _styleExampleParen() dans app.js) affiché
-                               en plus petit sur le verso espagnol des
-                               flashcards — concerne 15 définitions par
-                               fichier de données (Ser, Estar, Querer,
-                               Poder, Deber, Saber, Conocer, Venir,
-                               Acabar, Esperar, Pedir, Costar, Todavía,
-                               Doler/Me duele, Cent), pas seulement
-                               Ser/Estar comme diagnostiqué dans un
-                               premier temps (cf. Bilan_technique.md
-                               § Historique) — avec Claude Sonnet 5.
-     29/08/2026                Correctif desktop uniquement (demande
-                               utilisateur, captures d'écran) : centrage
-                               vertical réel des écrans à contenu court
-                               (ex. Flashcards) dans le bloc desktop
-                               @media (min-width:768px) — body passe de
-                               align-items:flex-start à center, min-
-                               height:100vh retiré de .app (#app-launcher
-                               exclu, déjà régi par sa propre règle par
-                               id). style.css uniquement — avec Claude
-                               Sonnet 5 (cf. Bilan_technique.md § Historique).
-     30/08/2026                Refonte du bouton retour du header de leçon
-                               (demande utilisateur, comparaison avec
-                               l'appli sœur Oromo) : ancien #lessonBackBtn
-                               (flèche + texte bilingue, une seule
-                               destination) remplacé dans index.html par
-                               un groupe de 3 icônes — 🏠 Accueil
-                               (navBackToHome()), ❓ Guide (navBackToGuide()),
-                               📚 Modules (lessonGoBack(), inchangée) —
-                               réutilisant .back-btn/.back-icon-btn déjà en
-                               place sur l'écran Modules. _setUI() (ce
-                               fichier) allégée en conséquence : clés
-                               lessonBackBtn et appel _setText() retirés.
-                               1ʳᵉ modification d'index.html de ce chantier
-                               — avec Claude Sonnet 5.
-     30/08/2026 (suite)        Remerciement ajouté à Mussa Sembro (retours
-                               croisés avec l'appli sœur Oromo, miroir du
-                               remerciement Christophe Elin/Sandrine Le
-                               Goff côté Oromo), dans le Guide (2 langues)
-                               et — nouveauté — dans la modale Infos, qui
-                               devient bilingue au passage (même mécanisme
-                               _buildHomeGuide() réutilisé tel quel, aucune
-                               ligne de JS supplémentaire). index.html
-                               uniquement — avec Claude Sonnet 5.
+   Historique commun aux 2 applications — VACHÉBO (français-espagnol)
+   et Taphad'Meuh (français-oromo) :
+
+     07/06/2026 → 29/06/2026  Versions Bêta créées avec IA Claude
+                               Sonnet 4.6 et Gemini 3.5 Flash.
+
+     29/06/2026 → 08/07/2026  Recettages et correctifs avec IA
+                               Claude Sonnet 5 et Gemini 3.5 Flash.
+
+     08/07/2026 → 12/07/2026  Retours d'expériences utilisateurs
+                               (Christophe, Maman, Moi) avec des
+                               correctifs réalisés avec IA Claude
+                               Sonnet 5.
+
+     18/07/2026 → 25/07/2026  Retours d'expérience utilisatrice
+                               Sandrine avec des correctifs réalisés
+                               avec IA Claude Sonnet 5.
+
+     27/08/2026 → 31/08/2026  Retours d'expérience utilisateur Mussa
+                               et Moi avec des correctifs réalisés
+                               avec IA Claude Sonnet 5.
+
+     05/09/2026               Mise à jour Qui suis-je + Historique
+                               avec IA Claude Sonnet 5.
    ============================================================
    ARCHITECTURE (5 fichiers) :
      ├─ index.html  → Structure HTML + launcher (5 écrans, 3 modales)
      ├─ style.css   → Thèmes couleur, composants visuels (51 variables CSS, 179 décl.)
      ├─ data-fr.js  → ALL_THEMES_FR (37 thèmes + 16 dialogues) — chargé à la demande
      ├─ data-es.js  → ALL_THEMES_ES (37 thèmes + 16 dialogues) — chargé à la demande
-     └─ app.js      → Ce fichier : logique applicative complète (6 401 lignes le 30/08/2026 — chiffre à revérifier périodiquement, cf. note du PLAN DU FICHIER ci-dessous)
+     └─ app.js      → Ce fichier : logique applicative complète (6 326 lignes le 05/09/2026 — chiffre à revérifier périodiquement, cf. note du PLAN DU FICHIER ci-dessous)
 
-   PLAN DU FICHIER (intégralement recalculé le 30/08/2026, demande
-   utilisateur explicite de remise à niveau des numéros de ligne et
-   commentaires — chaque ancre ci-dessous revérifiée une à une par grep
-   après coup, jamais déduite par un calcul de décalage sur le texte qui
-   les précède, même méthode que les recalculs précédents. Ce recalcul
-   couvre l'écart accumulé depuis le dernier recalcul complet du
-   27/08/2026 (ajout des 3 entrées HISTORIQUE du 29/08 et du 30/08
-   ci-dessus, +33 lignes en tête de fichier, décalant mécaniquement
-   toutes les ancres d'autant) ainsi que la dérive antérieure déjà
-   signalée mais non corrigée le 28/08/2026 (§9 renderFlash() décalée
-   par _styleExampleParen(), ~28 lignes). Au passage, 2 ajouts de code
-   déjà présents mais absents de ce plan et non repris dans HISTORIQUE
-   ont été repérés et documentés ci-dessous dans §3b : le regroupement
-   des réglages audio en panneau ⚙️ (_toggleLessonSettings(),
-   _updateSpeedBar(), _buildSpeedBar(), _tabHasPdf() — commentaire de
-   code daté du 27/08/2026) et _stopSpeaking() (commentaire de code daté
-   du 28/08/2026). Écart signalé rétroactivement plutôt que reconstitué :
-   aucune ligne de code n'a été modifiée pour ce recalcul, seuls les
-   commentaires d'en-tête le sont. Compteurs ARCHITECTURE ci-dessus
-   inchangés pour style.css (51 variables CSS/179 décl., 188 fonctions
-   nommées de premier niveau pour ce fichier, recomptés par grep avant/
-   après édition, aucun changement) :
-     §0    L.  279  Chargement conditionnel des données — loadDataForMode() (L.430)
-     §0b   L.  308  Helpers globaux — showResetConfirm(), confirmReset(), cancelReset(),
-                     spinner (_showSpinner()/_hideSpinner()), _launchConfetti() (L.355) ;
+   PLAN DU FICHIER (décalage mécanique appliqué le 05/09/2026, suite à
+   la condensation de l'historique ci-dessus, demande utilisateur
+   commune à VACHÉBO et Taphad'Meuh — seul HISTORIQUE DE L'APPLICATION
+   a été raccourci, aucune ligne de code fonctionnel modifiée. Ce bloc
+   précédant l'intégralité du fichier, le décalage résultant est
+   uniforme sur toutes les ancres ci-dessous ; il a été calculé
+   précisément (nouveau total de lignes moins ancien), puis chaque
+   ancre a été retranslatée d'autant et un échantillon (§0, §7, §17,
+   §21c) spot-vérifié par grep contre le fichier réellement réécrit,
+   plutôt que recalculé un par un comme lors des précédentes passes) :
+     §0    L.  204  Chargement conditionnel des données — loadDataForMode() (L.355)
+     §0b   L.  233  Helpers globaux — showResetConfirm(), confirmReset(), cancelReset(),
+                     spinner (_showSpinner()/_hideSpinner()), _launchConfetti() (L.280) ;
                      placés avant loadDataForMode() dans le fichier pour raison de
                      hoisting (cf. note d'ordre juste au-dessus de showResetConfirm())
-     §1    L.  466  Variables d'état globales
-     §1b   L.  524  Utilitaires bilingues — L(), isFrench(), langKeys(), _themeTitle()
-     §3    L.  607  Point d'entrée — showLauncherVariant() (L.626), initApp() (L.810),
-                     showLauncher() (L.776)
-     §3b   L.  952  Synthèse vocale — _getTtsSpeed()/_setTtsSpeed()/_getTtsRepeat()/
-                     _toggleTtsRepeat(), _resolveSpanishVoice() (L.1025), speak() (L.1250),
-                     speakSlow() (L.1432), _updateVoiceBadge() (L.1448).
-                     _stopSpeaking() (L.1412, ajoutée le 28/08/2026, absente
+     §1    L.  391  Variables d'état globales
+     §1b   L.  449  Utilitaires bilingues — L(), isFrench(), langKeys(), _themeTitle()
+     §3    L.  532  Point d'entrée — showLauncherVariant() (L.551), initApp() (L.735),
+                     showLauncher() (L.701)
+     §3b   L.  877  Synthèse vocale — _getTtsSpeed()/_setTtsSpeed()/_getTtsRepeat()/
+                     _toggleTtsRepeat(), _resolveSpanishVoice() (L.950), speak() (L.1175),
+                     speakSlow() (L.1357), _updateVoiceBadge() (L.1373).
+                     _stopSpeaking() (L.1337, ajoutée le 28/08/2026, absente
                      d'HISTORIQUE jusqu'ici) : coupe la synthèse en cours à toute
                      navigation interne de la leçon (carte retournée, mot suivant,
                      changement d'onglet, retour arrière…), pas seulement au
                      passage en arrière-plan (§3c) ou au début d'une nouvelle
                      lecture — incrémente _ttsGen pour invalider les callbacks
                      onDone/onboundary en attente.
-                     _toggleLessonSettings() (L.1495), _updateSpeedBar() (L.1507),
-                     _buildSpeedBar() (L.1533), _tabHasPdf() (L.1570, ajoutées le
+                     _toggleLessonSettings() (L.1420), _updateSpeedBar() (L.1432),
+                     _buildSpeedBar() (L.1458), _tabHasPdf() (L.1495, ajoutées le
                      27/08/2026, absentes d'HISTORIQUE jusqu'ici) : panneau
                      "⚙️ Réglages audio" repliable sous les onglets de la leçon,
                      regroupant badge voix + barre de vitesse + répétition +
                      emplacement du bouton PDF, auparavant toujours visibles sur
                      2 rangées fixes.
-     §3a-bis L. 1169  Surlignage mot par mot pendant la lecture (TTS, best-effort)
-     §3c   L. 1617  Interruption TTS à la mise en arrière-plan (visibilitychange)
-     §3d   L. 1638  Keepalive watchdog Chrome/Android (pause/resume toutes les 8 s)
-     §3e   L. 1668  Audio indisponible + toast _showToast() (L.1717) + _vibrateFeedback() (L.1743)
-     §4    L. 1752  Persistance — loadDone() (L.1768), suivi modules ouverts (12/07), étoiles, quiz
-     §5    L. 1969  Navigation — showScreen() (L.2234), _showScreenNoRender() (L.2200),
-                     _updateBottomNav() (L.1991)
-     §5b   L. 2097  Helpers niveaux — _updateLevelTabs() (L.2121), lessonGoBack() (L.2143),
-                     navGoModules() (L.2157)
-     §6    L. 2324  Écran Home — renderHome() (L.2350), _renderHomeRegionWidget() (L.2468)
-     §7    L. 2514  Écran Sections — renderSections() (L.2677), _buildThemeCard() (états + badge, 12/07).
+     §3a-bis L. 1094  Surlignage mot par mot pendant la lecture (TTS, best-effort)
+     §3c   L. 1542  Interruption TTS à la mise en arrière-plan (visibilitychange)
+     §3d   L. 1563  Keepalive watchdog Chrome/Android (pause/resume toutes les 8 s)
+     §3e   L. 1593  Audio indisponible + toast _showToast() (L.1642) + _vibrateFeedback() (L.1668)
+     §4    L. 1677  Persistance — loadDone() (L.1693), suivi modules ouverts (12/07), étoiles, quiz
+     §5    L. 1894  Navigation — showScreen() (L.2159), _showScreenNoRender() (L.2125),
+                     _updateBottomNav() (L.1916)
+     §5b   L. 2022  Helpers niveaux — _updateLevelTabs() (L.2046), lessonGoBack() (L.2068),
+                     navGoModules() (L.2082)
+     §6    L. 2249  Écran Home — renderHome() (L.2275), _renderHomeRegionWidget() (L.2393)
+     §7    L. 2439  Écran Sections — renderSections() (L.2602), _buildThemeCard() (états + badge, 12/07).
                      THEME_CATEGORIES, _findNextThemeToContinue(),
                      _buildContinueCard() et _buildThemeGridHTML() ajoutées
                      le 26/08/2026 (suite, demande utilisateur, ergonomie) :
@@ -190,7 +115,7 @@
                      renderSections() délègue le remplissage de grid1/grid2
                      à _buildThemeGridHTML() (au lieu d'un .map() direct sur
                      _buildThemeCard()).
-                     Appelle aussi _markModulesVisited() (§15d, appel L.2686)
+                     Appelle aussi _markModulesVisited() (§15d, appel L.2611)
                      depuis le 18/07/2026. Pastille .sections-mascot-all
                      ajoutée le 20/07/2026 (demande utilisateur) : clin d'œil
                      mascotte quand tous les modules sont à 3 étoiles, via
@@ -199,21 +124,21 @@
                      aria-label du bouton 🔄 global (_fillHeader(), appelée
                      par cette fonction) rendu dynamique selon la langue de
                      l'apprenant le 22/07/2026 (demande utilisateur).
-     §8    L. 2855  Ouverture d'un thème — openTheme() (L.2867, marque module ouvert), switchTab()
-     §9    L. 3099  Cartes Flash — renderFlash() (L.3115), pickAlpha(), buildAlphaDetail().
+     §8    L. 2780  Ouverture d'un thème — openTheme() (L.2792, marque module ouvert), switchTab()
+     §9    L. 3024  Cartes Flash — renderFlash() (L.3040), pickAlpha(), buildAlphaDetail().
                      Symbole mascotte régional .fc-region-mascot (recto FR/verso
                      ES et recto ES/verso FR) ajouté le 20/07/2026 (demande
                      utilisateur), cohérent avec .hrw-chip-mascot (§6/§15) et
                      .launcher-region-mascot (§15).
-     §9b   L. 3346  Reconnaissance vocale — _normalizeSpeech(), _levenshtein(), _speechMatch()
-     §9c   L. 3763  Onglet Répète — renderRepeat(), _rpShowWord(), _rpStartMic(), _rpShowEnd().
+     §9b   L. 3271  Reconnaissance vocale — _normalizeSpeech(), _levenshtein(), _speechMatch()
+     §9c   L. 3688  Onglet Répète — renderRepeat(), _rpShowWord(), _rpStartMic(), _rpShowEnd().
                      Clin d'œil mascotte sur sans-faute ajouté à _rpShowEnd() le
                      20/07/2026 (demande utilisateur), via _mascotSansFauteLine() (§14).
-     §10   L. 4124  Quiz 10 questions — _generateLevel1Quiz(), renderQuiz10(), checkQ10()
-     §11   L. 4402  Dialogue — _adaptDialogueLine(), renderDialog(), pickSit()
-     §12   L. 4523  Vocabulaire — renderVocab() (chips cliquables)
-     §13   L. 4581  Quiz Dialogue — renderDialogQuiz(), checkDQ()
-     §14   L. 4675  Utilitaires — _quizResultStrings(), _mascotSansFauteLine() (L.4730),
+     §10   L. 4049  Quiz 10 questions — _generateLevel1Quiz(), renderQuiz10(), checkQ10()
+     §11   L. 4327  Dialogue — _adaptDialogueLine(), renderDialog(), pickSit()
+     §12   L. 4448  Vocabulaire — renderVocab() (chips cliquables)
+     §13   L. 4506  Quiz Dialogue — renderDialogQuiz(), checkDQ()
+     §14   L. 4600  Utilitaires — _quizResultStrings(), _mascotSansFauteLine() (L.4655),
                      esc(), _escAttr(). _mascotSansFauteLine() ajoutée le
                      20/07/2026 (demande utilisateur) : factorise le clin d'œil
                      mascotte sur sans-faute auparavant écrit en dur dans
@@ -221,7 +146,7 @@
                      _rpShowEnd() (§9c). Depuis le 20/07/2026 (suite), délègue le
                      choix de clé mascotte à _mascotKeyForMode() (§15) pour
                      couvrir aussi le mode Français (🗼 France).
-     §15   L. 4760  Variantes régionales — renderRegionGrid(), pickRegion(), changeRegion().
+     §15   L. 4685  Variantes régionales — renderRegionGrid(), pickRegion(), changeRegion().
                      REGION_MASCOTS complété le 20/07/2026 (demande utilisateur)
                      d'une entrée France (🗼, symétrie avec le logo — Tour
                      Eiffel), et nouvelle fonction _mascotKeyForMode() qui
@@ -230,16 +155,16 @@
                      utilisée par §7, §14 et _refreshFooterMascot() (juste en
                      dessous, même section), qui n'affichent donc plus un jeu
                      de mots sans symbole en mode Français.
-     §15b  L. 5110  Accordéons — toggleAcc() (L.5121), toggleLevelAcc(), _resizeOpenAccordions()
+     §15b  L. 5035  Accordéons — toggleAcc() (L.5046), toggleLevelAcc(), _resizeOpenAccordions()
                      (aucune bannière numérotée dans le code à cet endroit, juste
                       un commentaire au-dessus de toggleAcc() — contrairement aux
                       autres sous-sections 5b/9b/9c qui en ont une)
-     §15c  L. 5175  Nouvel utilisateur & barre de nav — _isBrandNewUser(), condition
+     §15c  L. 5100  Nouvel utilisateur & barre de nav — _isBrandNewUser(), condition
                      dans le listener DOMContentLoaded (ajouté le 11/07/2026, demande
                      utilisateur : pas de barre de nav basse au tout premier lancement
                      sans aucun parcours ; réapparaît dès la première interaction via
                      showLauncherVariant())
-     §15d  L. 5206  Cartes de langue fusionnées avec l'explicatif — _langBoxInitialOpen(),
+     §15d  L. 5131  Cartes de langue fusionnées avec l'explicatif — _langBoxInitialOpen(),
                      _setLangBoxOpen(), _initLangBoxes(), toggleLangBox() ; ajouté le
                      18/07/2026 (demande utilisateur), fusionné le même jour avec les
                      anciennes cartes .lang-card (auparavant un encadré séparé à 2
@@ -247,29 +172,29 @@
                      désormais sa propre liste à puces dépliable et son propre état
                      déplié/replié, mémorisés séparément par langue.
                      Contient aussi (ajout du même jour, 3e retour utilisateur)
-                     _markModulesVisited() (L.5241) / _hasVisitedModules() (L.5253) : la
+                     _markModulesVisited() (L.5166) / _hasVisitedModules() (L.5178) : la
                      préférence explicite de l'apprenant prime toujours, puis les
                      cartes se replient dès la première visite des Modules (posé
-                     depuis renderSections(), §7, L.2686) — remplace l'ancienne
+                     depuis renderSections(), §7, L.2611) — remplace l'ancienne
                      dépendance à _isBrandNewUser() (§15c), trop grossière pour ce
                      cas précis (aucune bannière numérotée à cet endroit, comme
                      pour §15c)
-     §16   L. 5350  Remerciements — showCredits() (L.5356)
-     §17   L. 5370  Guide utilisateur — _buildHomeGuide() (L.5399), showGuide(), navBackToHome(),
+     §16   L. 5275  Remerciements — showCredits() (L.5281)
+     §17   L. 5295  Guide utilisateur — _buildHomeGuide() (L.5324), showGuide(), navBackToHome(),
                      navBackToGuide(), _refreshGuideRegion(), _guideSeenKey()/
                      _hasSeenGuide()/_markGuideSeen() (flag par langue). Câble aussi,
                      depuis le 12/07/2026, le libellé bilingue du bouton #homeInstallBtn
                      (déplacé en tête d'écran — cf. §21c). Remerciement à Mussa Sembro
                      ajouté le 30/08/2026 (suite) — cf. HISTORIQUE ci-dessus.
-     §18   L. 5911  E-mail antispam — openAndCopyEmail() (L.5925)
-     §19   L. 5944  Exports PDF — _pdfTheme() (L.5958), _exportGuide(), _exportVocab(), _exportSituation()
+     §18   L. 5836  E-mail antispam — openAndCopyEmail() (L.5850)
+     §19   L. 5869  Exports PDF — _pdfTheme() (L.5883), _exportGuide(), _exportVocab(), _exportSituation()
                      (étiqueté "§21" dans le code même — incohérence de numérotation
                       préexistante, non corrigée ici pour ne pas renuméroter tout le fichier)
-     §20   L. 6257  Accessibilité clavier (keydown → role="button")
-     §21   L. 6272  Initialisation Launcher — addEventListener sur les cartes de langue
-     §21b  L. 6298  Viewport height fix Android — --app-h via window.innerHeight
-     §21c  L. 6339  Bouton d'installation PWA native — _initInstallButtons() (L.6369),
-                     _installPwa() (L.6385) ; bouton #homeInstallBtn (tête de l'écran
+     §20   L. 6182  Accessibilité clavier (keydown → role="button")
+     §21   L. 6197  Initialisation Launcher — addEventListener sur les cartes de langue
+     §21b  L. 6223  Viewport height fix Android — --app-h via window.innerHeight
+     §21c  L. 6264  Bouton d'installation PWA native — _initInstallButtons() (L.6294),
+                     _installPwa() (L.6310) ; bouton #homeInstallBtn (tête de l'écran
                      Guide, libellé mis à jour dans §17) ajouté le 12/07/2026, remplace
                      celui auparavant caché dans la rubrique "Hors ligne" du guide
    ============================================================ */
@@ -5183,7 +5108,7 @@ window.addEventListener('resize', _resizeOpenAccordions);
    de STORAGE_KEY/_guideSeenKey() : ces deux helpers dépendent de currentMode,
    qui vaut '' sur l'écran 0 — il faut ici vérifier les DEUX modes à la fois,
    quel que soit celui éventuellement déjà choisi.
-     • 'pe_es_fr_done_v1' / 'pe_fr_es_done_v1' → progression (cf. §4, L.609/630)
+     • 'pe_es_fr_done_v1' / 'pe_fr_es_done_v1' → progression (cf. §4, L.534/555)
      • 'vachebo_guide_vu_fr' / 'vachebo_guide_vu_es' → guide vu par mode (§17)
      • 'vachebo_guide_vu' → ancien flag global pré-05/07/2026 (migration)
    Enveloppé en try/catch comme le reste des accès localStorage de l'app
@@ -5233,7 +5158,7 @@ function _isBrandNewUser() {
 
 /* Flag "l'apprenant est déjà allé au moins une fois sur l'écran Modules"
    (peu importe le mode FR/ES : l'écran 0, lui, est commun aux deux) — posé
-   par _markModulesVisited(), appelée depuis renderSections() (§7, L.2239)
+   par _markModulesVisited(), appelée depuis renderSections() (§7, L.2164)
    à chaque rendu de la grille de modules, quel que soit le chemin
    d'entrée (bouton nav, bouton "Commencer" du Guide, retour de leçon...). */
 var MODULES_VISITED_KEY = 'vachebo_modules_visited_v1';
